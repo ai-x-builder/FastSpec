@@ -40,6 +40,8 @@ If any prerequisite is missing, do not write `TECH.md`. Return to `spec-write-pr
 
 Before drafting, read the latest reviewed `PRODUCT.md`, inspect the relevant code, and identify the main files, types, data flow, and ownership boundaries. Do not guess about current architecture when the code can be inspected directly.
 
+For Figma-backed UI work, use `spec-use-figma-design` when available to turn the approved design source and visual contract into a concrete implementation mapping. If direct Figma access is unavailable, use the recorded design context, screenshots, exports, or user-provided notes and record the limitation.
+
 ## Structure
 
 Required sections:
@@ -50,7 +52,11 @@ Required sections:
    Reference `PRODUCT.md` for user-visible behavior rather than restating it.
 2. **Proposed changes** — The implementation plan: which modules change, new types/APIs/state being introduced, data flow, ownership boundaries, and how the design follows existing patterns. Call out tradeoffs when there is more than one reasonable path.
 3. **Product behavior mapping** — Map important numbered Behavior invariants from `PRODUCT.md` to the implementation areas and validation approach. Do not redefine product behavior.
-4. **Testing and validation** — How the implementation will be verified against the product behavior. Owns everything about proving the feature works: unit tests, integration tests, manual steps, screenshots, videos, and any other verification. Reference the numbered Behavior invariants from `PRODUCT.md` directly rather than restating them; each important invariant should map to a concrete test or verification step. This section is where validation lives — `PRODUCT.md` intentionally does not have a Validation section.
+4. **Testing and validation** — How the implementation will be verified against the product behavior. Owns everything about proving the feature works: unit tests, integration tests, manual steps, screenshots, videos, and any other verification. Reference the numbered Behavior invariants from `PRODUCT.md` directly rather than restating them; each important invariant should map to a concrete test or verification step. For Figma-backed UI work, name the key screens, states, and viewports that need visual verification. This section is where validation lives — `PRODUCT.md` intentionally does not have a Validation section.
+
+Conditional required sections:
+
+- **Design implementation mapping** — Required for Figma-backed UI work. Map relevant Figma screens, frames, components, states, and assets to code areas, existing components, design-system primitives, tokens, icons, assets, and state/responsive implementation strategy. Record any intentional deviation from Figma with the reason, expected user-visible result, and whether PRODUCT re-approval is needed.
 
 Optional sections — include only when they add signal. Omit the heading entirely if empty; do not write "None" as a placeholder.
 
@@ -84,6 +90,7 @@ If Context and Proposed changes end up describing the same files and state from 
 - Prefer concrete implementation guidance over generic architecture language.
 - Explain why the proposed design fits this repo.
 - Reference `PRODUCT.md` for behavior instead of restating it.
+- For Figma-backed UI work, map the approved visual contract to existing components, tokens, assets, and verification steps before proposing new UI primitives.
 - Use Mermaid diagrams when they materially clarify technical flow or structure, and omit them when prose is clearer.
 - If technical research shows product behavior is infeasible or should change, return to `PRODUCT.md`; do not silently redefine behavior in `TECH.md`.
 - Each section should earn its place — if a section would repeat another or contain only boilerplate, omit it.
@@ -111,6 +118,7 @@ Gate handoff requirements:
 - make suggested options concrete technical plan choices, not product behavior changes, and describe the implementation impact, risk, validation impact, or workflow impact
 - when there is a recommended option, mark it as recommended and give a short reason focused on codebase fit, risk reduction, implementation clarity, or validation confidence
 - summarize non-blocking technical questions as the assumptions and impact already recorded in `TECH.md`
+- for Figma-backed UI work, state whether the design implementation mapping and visual verification plan are complete enough to implement without rediscovering design intent
 
 If the user answers a blocking technical question, update `TECH.md` to reflect the decision, keep `tech.status` in `GATES.json` as `pending`, and return to the TECH Review Gate. Continue this one-question-at-a-time loop until no blocking technical questions remain. Implementation cannot begin while any blocking technical question remains. Selecting a suggested option answers only that blocking technical question; it does not approve the whole technical spec unless the user also explicitly approves `TECH.md` or asks to continue to implementation.
 
@@ -121,6 +129,7 @@ The gate passes only when:
 - non-blocking technical questions have recorded assumptions and impact
 - the technical plan is consistent with `PRODUCT.md`
 - risks, module boundaries, and validation steps are clear enough for implementation
+- for Figma-backed UI work, the design implementation mapping and visual verification plan are specific enough that the implementer does not need to rediscover design intent
 - the implementer can start without redesigning the main approach
 - `tech.status` is updated to `approved` in `GATES.json`
 
@@ -131,5 +140,6 @@ For large features, the implementer may optionally keep a `DECISIONS.md` file su
 ## Related Skills
 
 - `spec-implement`
+- `spec-use-figma-design`
 - `spec-write-product`
 - `spec-driven-workflow`

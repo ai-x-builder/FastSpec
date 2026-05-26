@@ -46,6 +46,8 @@ Treat:
 
 Make sure you understand the expected behavior, constraints, risks, and validation plan before writing code.
 
+For Figma-backed UI work, also consult the Figma source or the recorded design context before changing code. If useful, use `spec-use-figma-design` to refresh the visual verification checklist from the approved specs and available design material.
+
 ### 2. Offer optional implementation aids for large features
 
 For large or long-running features, optionally offer one of these aids to the user before implementation begins:
@@ -64,6 +66,7 @@ During implementation:
 - keep behavior aligned with `PRODUCT.md`
 - keep architecture and sequencing aligned with `TECH.md`
 - add or update tests and verification artifacts as the work lands
+- for Figma-backed UI work, keep the implementation aligned with the approved visual contract and design implementation mapping
 
 Use the same PR for the specs and implementation when practical so the full feature evolution is reviewable in one place.
 
@@ -75,6 +78,7 @@ In particular:
 
 - update `PRODUCT.md` when user-facing behavior, UX, edge cases, behavior invariants, or externally visible acceptance expectations change
 - update `TECH.md` when architecture, sequencing, module boundaries, or validation strategy change
+- for Figma-backed UI work, update `PRODUCT.md` when acceptance-relevant visual contract details change, and update `TECH.md` when design mapping or visual verification strategy changes
 - update `GATES.json` in the same step: PRODUCT changes set both statuses to `pending`; TECH-only changes set `tech.status` to `pending`
 - after any status reset, return to the relevant review gate and get the affected status back to `approved` before considering implementation complete
 - keep those updates in the same PR as the corresponding code changes
@@ -92,6 +96,9 @@ Prefer:
 - unit tests using the repository's existing test framework
 - integration or end-to-end tests for important user flows
 - manual verification artifacts, screenshots, or videos when useful for UI-heavy work
+- for Figma-backed UI work, screenshots, videos, browser captures, or concise manual comparison summaries for the relevant screens, states, and viewports unless capture is impossible
+
+If visual capture is impossible for Figma-backed UI work, state what could not be captured, why, and what manual checks were performed instead. The final implementation report should name the Figma source or recorded design context checked and call out any known visual deviations.
 
 ## Best Practices
 
@@ -103,5 +110,6 @@ Prefer:
 ## Related Skills
 
 - `spec-driven-workflow`
+- `spec-use-figma-design`
 - `spec-write-product`
 - `spec-write-tech`

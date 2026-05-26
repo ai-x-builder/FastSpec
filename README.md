@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/ai-x-builder/Spec-Driven-Development/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License" /></a>
-  <img src="https://img.shields.io/badge/skills-4-brightgreen" alt="Skill Count" />
+  <img src="https://img.shields.io/badge/skills-5-brightgreen" alt="Skill Count" />
   <img src="https://img.shields.io/badge/workflow-spec--first-orange" alt="Workflow" />
   <img src="https://img.shields.io/badge/status-active-lightgrey" alt="Status" />
 </p>
@@ -68,6 +68,7 @@ Implementation and verification
 - [x] **Behavior-first product specs** — write `PRODUCT.md` as stable numbered invariants without implementation details.
 - [x] **Grounded technical specs** — write `TECH.md` from approved product behavior and current codebase research.
 - [x] **Gate status tracking** — persist review state in a minimal `GATES.json` file per spec directory.
+- [x] **Figma-backed design contracts** — turn provided Figma UI designs into product visual contracts, implementation mappings, and visual verification expectations.
 - [ ] **Automated validation helpers** — future scripts could lint spec directories and gate state consistency.
 
 ---
@@ -171,6 +172,7 @@ Primary documentation lives in the skills themselves:
 - [spec-write-product](./skills/spec-write-product/SKILL.md)
 - [spec-write-tech](./skills/spec-write-tech/SKILL.md)
 - [spec-implement](./skills/spec-implement/SKILL.md)
+- [spec-use-figma-design](./skills/spec-use-figma-design/SKILL.md)
 
 Example specs live in [specs](./specs).
 
@@ -181,15 +183,19 @@ Example specs live in [specs](./specs).
 ```mermaid
 flowchart TD
   User[User request] --> Workflow[spec-driven-workflow]
+  Workflow --> FigmaDesign[spec-use-figma-design when Figma-backed]
   Workflow --> Product[spec-write-product]
+  FigmaDesign --> Product
   Product --> ProductDoc[PRODUCT.md]
   Product --> Gates[GATES.json]
   ProductDoc --> ProductGate[PRODUCT Review Gate]
   ProductGate --> Tech[spec-write-tech]
+  FigmaDesign --> Tech
   Tech --> TechDoc[TECH.md]
   Tech --> Gates
   TechDoc --> TechGate[TECH Review Gate]
   TechGate --> Implement[spec-implement]
+  FigmaDesign --> Implement
   Implement --> Verification[Tests and verification]
   Verification --> ProductDoc
   Verification --> TechDoc
@@ -203,6 +209,7 @@ flowchart TD
 | `skills/spec-write-product` | Produces behavior-first `PRODUCT.md` files and manages PRODUCT Review Gate handoff. |
 | `skills/spec-write-tech` | Produces implementation-oriented `TECH.md` files from approved product specs. |
 | `skills/spec-implement` | Implements only after both gates pass and keeps specs aligned with shipped behavior. |
+| `skills/spec-use-figma-design` | Extracts Figma-backed UI design context into visual contracts, implementation mappings, and verification checklists. |
 | `specs` | Stores checked-in product specs, tech specs, and gate-state examples by feature id. |
 
 ---
@@ -215,7 +222,8 @@ flowchart TD
 │   ├── spec-driven-workflow/
 │   ├── spec-write-product/
 │   ├── spec-write-tech/
-│   └── spec-implement/
+│   ├── spec-implement/
+│   └── spec-use-figma-design/
 ├── specs/
 │   └── <feature-id>/
 │       ├── PRODUCT.md

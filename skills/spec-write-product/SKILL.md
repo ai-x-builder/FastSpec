@@ -60,15 +60,18 @@ Classify unresolved questions before writing:
 
 Do not advance to TECH while blocking product questions remain.
 
-### Figma mocks
+### Design sources and Figma
 
-If the feature has any UI or interaction design, ask the user whether a Figma mock exists before drafting the Behavior section, and include the link in the spec when one is provided. A mock is often the most reliable source of truth for visual states, spacing, and edge-case layouts — not asking can cause the Behavior section to guess at intent the designer already settled.
+If the feature has any UI, interaction, layout, or visual design impact, ask the user whether a Figma source exists before drafting the Behavior section. A Figma source is often the most reliable source of truth for visual states, spacing, hierarchy, copy, and edge-case layouts. Not asking can cause Behavior to guess at intent the designer already settled.
 
-- If the user provides a link, include it under a short `## Figma` section (or inline near the top of Behavior) as `Figma: <link>`.
-- If the user confirms no mock exists, note `Figma: none provided` so the absence is explicit rather than ambiguous.
+- If the user provides a link, use `spec-use-figma-design` during PRODUCT to extract a design source and visual contract draft. Include the link under `## Design source` as `Figma: <link>`, and include specific frame, node, screen, or component references when available.
+- If the user confirms no Figma source exists, note `Figma: none provided` so the absence is explicit rather than ambiguous.
 - If the feature is purely backend (data model, API, CLI with no visual surface), skip the question and omit the section.
+- If the Figma source cannot be accessed directly, ask for screenshots, exports, or design notes when needed, and record the access limitation instead of implying that design details were verified.
 
-Do not silently drop design context; an explicit "none" is preferable to no mention at all on features where design would normally be expected.
+For Figma-backed UI work, `PRODUCT.md` should include a `## Visual contract` section that captures user-visible layout structure, content hierarchy, copy, interactive states, responsive expectations, accessibility and focus expectations, and other visual or interaction constraints that affect acceptance. Keep the contract product-facing: describe what the user sees or experiences, not internal components, CSS strategy, state layout, or framework-specific techniques.
+
+Do not silently drop design context; an explicit "none" or access limitation is preferable to no mention at all on features where design would normally be expected.
 
 ## Structure
 
@@ -81,7 +84,8 @@ Optional sections — include only when they add signal beyond the core. Omit th
 
 - **Problem** — Include only when the motivation isn't obvious from Summary.
 - **Goals / Non-goals** — Include when scope is ambiguous or has been contested.
-- **Figma** — Include with a link when one exists, or an explicit `Figma: none provided` note when design matters but no mock exists. Omit entirely for non-visual features. See "Figma mocks" above.
+- **Design source** — Include with a Figma link when one exists, including specific frame, node, screen, or component references when available. Include an explicit `Figma: none provided` note when design matters but no Figma source exists. Omit entirely for non-visual features. See "Design sources and Figma" above.
+- **Visual contract** — Required for Figma-backed UI work. Capture user-visible layout structure, content hierarchy, copy, states, responsive expectations, accessibility and focus expectations, and acceptance-relevant visual constraints. Keep implementation details for `TECH.md`.
 - **Diagram** — Include a Mermaid diagram only when it clarifies non-trivial product behavior, such as branching user journeys, role or permission interactions, object lifecycle states, complex state transitions, or cross-module product interactions. Omit diagrams for short linear flows or when the diagram would merely duplicate the numbered Behavior list.
 - **Open questions** — Prefer inline `**Open question (blocking):** ...` or `**Open question (non-blocking):** ...` next to the relevant behavior. Include a dedicated section only if there are multiple unresolved questions worth collecting. Non-blocking questions must state the current assumption and impact.
 
@@ -120,6 +124,7 @@ When relevant, also cover:
 - Privacy and disclosure boundaries for UI, API responses, CLI output, exports, shares, copied content, logs, audit trails, diagnostics, telemetry disclosures, and error messages.
 - Edge cases such as permission denied, offline, timeouts, races between state changes, multiple concurrent instances, stale or missing data, focus loss mid-interaction, and interactions with adjacent features.
 - Keyboard, accessibility, and focus expectations for interactive UI.
+- For Figma-backed UI work, any visual or interaction expectation that affects acceptance or regression risk, such as required states, responsive behavior, focus treatment, content hierarchy, or major layout relationships.
 
 Length Behavior to match the feature. Trivial features may need a handful of invariants; complex features may need many, with sub-sections per flow or state. The rest of the spec should stay thin so Behavior can be as exhaustive as the feature requires without producing a bloated document overall. Err toward enumerating one more edge case rather than one fewer.
 
@@ -128,6 +133,12 @@ Length Behavior to match the feature. Trivial features may need a handful of inv
 Use Mermaid diagrams in `PRODUCT.md` sparingly. A diagram is appropriate when it makes complex user-visible behavior easier to review, such as a branched journey, lifecycle, permission path, state transition, or cross-module product interaction. Prefer the Mermaid type that matches the need: flowchart for branching flows, state diagram for lifecycles, and sequence diagram for user-visible cross-system interactions.
 
 Do not include diagrams for simple linear behavior, narrow copy or UI tweaks, or flows that are clearer as numbered invariants. A diagram must complement the Behavior section, not replace it. Required behavior still belongs in stable numbered items, and every diagram should be supported by concise text that explains the important behavior or decision.
+
+### Figma-backed visual contracts
+
+For Figma-backed UI work, use `spec-use-figma-design` when available to turn the design into product-facing source material. Capture acceptance-relevant visual and interaction details in the `Design source`, `Visual contract`, and numbered Behavior items. Missing Figma states, unclear responsive behavior, unknown assets, and design contradictions are blocking questions when implementation would otherwise have to guess acceptance-critical behavior.
+
+Non-blocking design uncertainties can proceed only when the current assumption and impact are recorded in `PRODUCT.md`. Do not require pixel-perfect implementation by default; record the user-visible expectations that matter for acceptance.
 
 ## Length heuristic
 
@@ -145,6 +156,7 @@ If you find yourself writing the same idea in Summary, Problem, Goals, and Behav
 - Prefer concrete, observable behavior over aspirational wording.
 - Write Behavior as stable numbered invariants; use prose inside an invariant only when it improves clarity.
 - Capture invariants that must not regress and edge cases that are easy to miss.
+- For Figma-backed UI work, extract a visual contract instead of only storing the link.
 - Use Mermaid diagrams only when they clarify complex product behavior; avoid decorative, oversized, vague, or redundant diagrams.
 - Avoid implementation details unless unavoidable for the UX.
 - Each section should earn its place — if a section would repeat another or contain only boilerplate, omit it.
@@ -171,6 +183,7 @@ Gate handoff requirements:
 - make suggested options concrete product choices, not technical implementation plans, and describe the user-visible behavior or workflow impact
 - when there is a recommended option, mark it as recommended and give a short reason focused on product behavior, user effort, or workflow clarity
 - summarize non-blocking questions as the assumptions and impact already recorded in `PRODUCT.md`
+- for Figma-backed UI work, state whether the design source was read directly or through fallback material, and whether any design access limitations or unresolved design questions remain
 
 If the user answers a blocking question, update `PRODUCT.md` to reflect the decision, keep both statuses in `GATES.json` as `pending`, and return to the PRODUCT Review Gate. Continue this one-question-at-a-time loop until no blocking product questions remain. Selecting a suggested option answers only that blocking question; it does not approve the whole product spec unless the user also explicitly approves `PRODUCT.md` or asks to continue to TECH.
 
@@ -180,6 +193,7 @@ The gate passes only when:
 - no blocking open questions remain
 - non-blocking open questions have recorded assumptions and impact
 - behavior is concrete enough that the TECH author does not need to guess product intent
+- for Figma-backed UI work, the design source is recorded, acceptance-relevant visual expectations are captured, access limitations are noted, and blocking design questions are resolved
 - `product.status` is updated to `approved` in `GATES.json`
 
 If the gate does not pass, revise `PRODUCT.md`, keep both statuses in `GATES.json` as `pending`, and remain in the product phase.
@@ -189,6 +203,7 @@ For large features, the implementer may optionally keep a `DECISIONS.md` file su
 ## Related Skills
 
 - `spec-implement`
+- `spec-use-figma-design`
 - `spec-write-tech`
 - `spec-driven-workflow`
 

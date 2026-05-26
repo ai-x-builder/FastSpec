@@ -69,6 +69,7 @@ Strongly prefer specs when the change is substantial, such as:
 - deep or cross-cutting stack changes
 - risky behavior changes where regressions would be expensive
 - work where agent quality will improve materially from clearer inputs
+- UI work with a Figma design source when visual states, responsive behavior, layout, or interaction fidelity materially affect acceptance
 
 Specs are often unnecessary for:
 
@@ -85,12 +86,14 @@ If the change is too small to justify both `PRODUCT.md` and `TECH.md`, do not en
 Collect enough context to understand the problem and target scope:
 
 - user request
-- linked ticket, issue, design, or other source material
+- linked ticket, issue, design source such as a Figma URL, or other source material
 - target users or consumers
 - core scenarios and known constraints
 - initial blocking and non-blocking questions
 
 Blocking questions prevent the current phase from advancing. Non-blocking questions can move forward only when the current assumption and impact are recorded.
+
+For UI, interaction, layout, or visual design work, ask whether a Figma source exists. If the user provides one, treat it as source material that must be interpreted during the relevant spec phases, not merely copied into `PRODUCT.md`. If the design cannot be accessed directly, ask for screenshots, exports, or design notes when needed and record the limitation.
 
 ### 2. Decide whether the feature needs specs
 
@@ -108,9 +111,10 @@ Use the `spec-write-product` skill to produce it. The product spec should define
 - the desired user experience
 - invariants and edge cases
 - every user-visible state, transition, and behavior that must not regress
+- the design source and visual contract for Figma-backed UI work
 - blocking and non-blocking product open questions
 
-If the feature has UI or interaction design, ask for a Figma mock if one exists. If there is no mock, continue but call that out explicitly in the product spec.
+If the feature has UI or interaction design, ask for a Figma design source if one exists. If one is provided, use `spec-use-figma-design` during PRODUCT to extract a design source and visual contract draft. If there is no Figma source, continue but call that out explicitly in the product spec.
 
 Reference the source ticket, issue, or feature id in the spec when one exists.
 
@@ -136,6 +140,7 @@ The gate passes only when:
 - no blocking open questions remain
 - non-blocking questions have recorded assumptions and impact
 - the behavior is specific enough that `TECH.md` does not need to guess product intent
+- for Figma-backed UI work, the design source is recorded, acceptance-relevant visual expectations are captured, access limitations are noted, and blocking design questions are resolved
 - `product.status` is updated to `approved` in `GATES.json`
 
 If the gate does not pass, update `PRODUCT.md`, keep both statuses `pending`, and remain in the product phase.
@@ -152,8 +157,11 @@ After the PRODUCT Review Gate passes and `product.status` is `approved`, use the
 - risks and mitigations
 - testing and validation plan
 - mapping from numbered `PRODUCT.md` behaviors to concrete verification
+- for Figma-backed UI work, design implementation mapping and visual verification planning
 
 `TECH.md` must not redefine product behavior or conflict with `PRODUCT.md`. If technical research shows the product behavior is infeasible or should change, return to the product phase, update `PRODUCT.md`, and pass PRODUCT Review Gate again before updating `TECH.md`.
+
+For Figma-backed UI work, use `spec-use-figma-design` during TECH to map the relevant frames, components, states, assets, and visual constraints to code areas, existing components, design-system primitives, tokens, and verification steps.
 
 If `PRODUCT.md` changes after `TECH.md` is generated, treat `TECH.md` as stale until it is updated from the latest reviewed product spec.
 
@@ -179,6 +187,7 @@ The gate passes only when:
 - non-blocking technical questions have recorded assumptions and impact
 - the technical plan is consistent with `PRODUCT.md`
 - key risks, module boundaries, and validation steps are clear
+- for Figma-backed UI work, the implementation mapping and visual verification plan are specific enough that the implementer does not need to rediscover design intent
 - implementation can start without redesigning the main approach
 - `tech.status` is updated to `approved` in `GATES.json`
 
@@ -187,6 +196,8 @@ If the gate does not pass, update `TECH.md` and keep `tech.status` as `pending`.
 ### 7. Implement approved specs
 
 After both review gates pass and both statuses are `approved` in `GATES.json`, use the `spec-implement` skill to build from the approved `PRODUCT.md` and `TECH.md`.
+
+For Figma-backed UI work, the implementer should consult the Figma source or recorded design context before changing code, and can use `spec-use-figma-design` to refresh the visual verification checklist.
 
 The implementation can often be pushed in the same PR as the product and tech specs. As the engineer iterates, keep `PRODUCT.md`, `TECH.md`, code changes, and tests in that same PR so the review reflects the feature that will actually ship.
 
@@ -206,6 +217,7 @@ Update `PRODUCT.md` when:
 - user-facing behavior changes
 - UX details or edge cases change
 - behavior invariants or externally visible acceptance expectations change
+- acceptance-relevant visual contract details change for Figma-backed UI work
 
 When `PRODUCT.md` changes, set both statuses in `GATES.json` to `pending`.
 
@@ -215,6 +227,7 @@ Update `TECH.md` when:
 - architectural boundaries move
 - risks, dependencies, or rollout details change
 - the testing or validation plan changes
+- design implementation mapping or visual verification strategy changes for Figma-backed UI work
 
 When `TECH.md` changes without changing product behavior, set `tech.status` in `GATES.json` to `pending`.
 
@@ -229,6 +242,7 @@ Before considering the work complete, make sure verification maps back to both s
 - unit tests using the repository's existing test framework
 - integration or end-to-end tests for critical user flows
 - walkthroughs, screenshots, videos, or other artifacts when useful for UI-heavy work
+- for Figma-backed UI work, screenshots, videos, browser captures, or concise manual comparison summaries for the relevant screens, states, and viewports unless capture is impossible; final reporting should name the design source checked and any known visual deviations
 
 ## Best Practices
 
@@ -241,5 +255,6 @@ Before considering the work complete, make sure verification maps back to both s
 ## Related Skills
 
 - `spec-implement`
+- `spec-use-figma-design`
 - `spec-write-product`
 - `spec-write-tech`
