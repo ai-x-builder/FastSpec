@@ -91,17 +91,35 @@ Do not include Validation, Success criteria, or Testing sections. Validation and
 
 Behavior is the spec. Everything else is framing.
 
-The goal of Behavior is a complete English description of how the feature works, detailed enough that a tech spec can be written directly from it without the author having to guess or re-derive product intent. If a reader finishes Behavior with questions about what the feature does in some situation, the section is not done.
+The goal of Behavior is a complete description of how the feature works, detailed enough that a tech spec can be written directly from it without the author having to guess or re-derive product intent. If a reader finishes Behavior with questions about what the feature does in some situation, the section is not done.
 
-Describe, at minimum:
+Write Behavior as stable numbered, testable invariants with IDs such as `B1`, `B2`, and `B3`, so `TECH.md`, implementation work, and review can reference the same product requirements without restating them.
 
-- Default behavior and the happy-path user flow.
-- Every user-visible state and the transitions between them.
-- All inputs the user can provide and how the feature responds.
-- Empty states, error states, loading / pending states, and cancellation.
-- Edge cases a reasonable implementer would not think to ask about — permission denied, offline, timeouts, races between state changes, multiple concurrent instances, stale or missing data, focus loss mid-interaction, interactions with adjacent features.
-- Keyboard, accessibility, and focus expectations where relevant.
+Keep Behavior IDs globally unique within the section and stable across later edits. If Behavior is split into sub-sections per flow or state, continue the same `B1`, `B2`, `B3` sequence instead of restarting numbering in each sub-section.
+
+For very large requests, cross-module features, or requirements with clearly distinct scenarios, prefer splitting Behavior into small `###` sub-sections before listing the numbered invariants. Choose sub-sections that match user-visible flows, consumer operations, lifecycle states, roles / permissions, or affected product surfaces. Keep the headings short and concrete, such as `### Creation Flow`, `### Permissions`, or `### Migration Behavior`. Do not create sub-sections merely to mirror implementation modules, and do not restart or prefix Behavior IDs by sub-section.
+
+Each item should describe concrete, observable behavior. Avoid vague claims like "fast", "seamless", "intuitive", or "robust" unless the item also states the user-visible or consumer-observable result that makes the claim true.
+
+Describe, at minimum, the behavior that is relevant to the feature.
+
+Always cover:
+
+- The default behavior and happy-path flow.
+- The user-visible or consumer-observable states, and the transitions between them. For non-UI surfaces, describe what the caller, command invoker, data reader / writer, protocol participant, or other consumer can observe.
+- The inputs the user or consuming surface can provide, and the observable response to each.
+- The scenarios where the behavior is available, unavailable, or explicitly out of scope.
+- Empty, loading / pending, error, and cancellation behavior when those states can occur.
 - Invariants that must hold at all times and behaviors that must not regress.
+
+When relevant, also cover:
+
+- Product limits such as size, count, duration, timing, quotas, cooldowns, throttling, rate limits, and what the user or consumer sees when a limit is reached.
+- Persistence and lifecycle behavior such as reload, navigation away and back, session restore, save / discard, reset, undo / redo, drafts, history, and creation / deletion boundaries.
+- Compatibility and migration behavior for existing data, old clients, old configs, missing fields, deprecated inputs, version mismatches, and mixed-version interactions.
+- Privacy and disclosure boundaries for UI, API responses, CLI output, exports, shares, copied content, logs, audit trails, diagnostics, telemetry disclosures, and error messages.
+- Edge cases such as permission denied, offline, timeouts, races between state changes, multiple concurrent instances, stale or missing data, focus loss mid-interaction, and interactions with adjacent features.
+- Keyboard, accessibility, and focus expectations for interactive UI.
 
 Length Behavior to match the feature. Trivial features may need a handful of invariants; complex features may need many, with sub-sections per flow or state. The rest of the spec should stay thin so Behavior can be as exhaustive as the feature requires without producing a bloated document overall. Err toward enumerating one more edge case rather than one fewer.
 
@@ -118,14 +136,14 @@ Behavior should be as long as the feature requires — do not truncate edge case
 - Trivial fix or narrow UI tweak: no spec.
 - Small feature (single module, few edge cases): framing plus Behavior typically ~30–60 lines total.
 - Medium feature (cross-module, multiple states): typically ~80–150 lines total.
-- Large or behaviorally rich feature: longer is fine, and most of the length should live in Behavior.
+- Large, cross-module, or behaviorally rich feature: longer is fine, and most of the length should live in Behavior. Prefer Behavior sub-sections when distinct user scenarios, roles, states, or product surfaces would otherwise make one flat invariant list hard to review.
 
 If you find yourself writing the same idea in Summary, Problem, Goals, and Behavior, collapse the framing — not the Behavior content.
 
 ## Writing guidance
 
 - Prefer concrete, observable behavior over aspirational wording.
-- Write Behavior as a list of invariants rather than prose when possible.
+- Write Behavior as stable numbered invariants; use prose inside an invariant only when it improves clarity.
 - Capture invariants that must not regress and edge cases that are easy to miss.
 - Use Mermaid diagrams only when they clarify complex product behavior; avoid decorative, oversized, vague, or redundant diagrams.
 - Avoid implementation details unless unavoidable for the UX.
