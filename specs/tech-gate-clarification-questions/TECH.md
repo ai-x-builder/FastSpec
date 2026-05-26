@@ -2,7 +2,7 @@
 
 ## Context
 
-The approved product behavior is in `specs-driven/tech-gate-clarification-questions/PRODUCT.md`. This change updates the Markdown skill instructions that govern spec workflow behavior after `TECH.md` is written.
+The approved product behavior is in `specs/tech-gate-clarification-questions/PRODUCT.md`. This change updates the Markdown skill instructions that govern spec workflow behavior after `TECH.md` is written.
 
 Relevant current files:
 
@@ -66,7 +66,7 @@ Validation is text-based because the change is instruction-only:
 - Inspect `skills/spec-driven-workflow/SKILL.md` and confirm the TECH Review Gate describes blocker presence, no-blocker approval prompt, full blocker list, one-question-at-a-time clarification, one or two suggested options, non-blocking assumptions, no implementation while blockers remain, and product-affecting return to PRODUCT. Covers B1-B17 at the top-level workflow.
 - Inspect `skills/spec-write-tech/SKILL.md` and confirm the TECH-writing skill contains the same gate handoff behavior, including the definition of blocking technical questions and the product-behavior boundary. Covers B1-B17 for the actual TECH phase skill.
 - Inspect `skills/spec-implement/SKILL.md` and confirm no change is required because it already requires approved PRODUCT and TECH gate states before implementation.
-- Inspect `specs-driven/tech-gate-clarification-questions/GATES.json` and confirm `product.status` is `approved` and `tech.status` remains `pending` after writing this TECH spec.
+- Inspect `specs/tech-gate-clarification-questions/GATES.json` and confirm `product.status` is `approved` and `tech.status` remains `pending` after writing this TECH spec.
 - Run `git diff --check` to catch trailing whitespace or patch formatting issues.
 
 ## Risks and Mitigations

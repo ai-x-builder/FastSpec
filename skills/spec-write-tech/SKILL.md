@@ -11,16 +11,16 @@ Write the `TECH.md` phase for a significant feature in the target product, app, 
 
 The tech spec should translate reviewed product intent into an implementation plan that fits the existing codebase, documents architectural choices, and makes the work easier for agents to execute and reviewers to evaluate.
 
-Write specs to `specs-driven/<id>/TECH.md`, where `<id>` is one of:
+Write specs to `specs/<id>/TECH.md`, where `<id>` is one of:
 
-- a Linear ticket number (e.g. `specs-driven/APP-1234/TECH.md`)
-- a GitHub issue id, prefixed with `gh-` (e.g. `specs-driven/gh-4567/TECH.md`)
-- a GitLab issue id, prefixed with `gl-` (e.g. `specs-driven/gl-7890/TECH.md`)
-- a short kebab-case feature name (e.g. `specs-driven/vertical-tabs-hover-sidecar/TECH.md`)
+- a Linear ticket number (e.g. `specs/APP-1234/TECH.md`)
+- a GitHub issue id, prefixed with `gh-` (e.g. `specs/gh-4567/TECH.md`)
+- a GitLab issue id, prefixed with `gl-` (e.g. `specs/gl-7890/TECH.md`)
+- a short kebab-case feature name (e.g. `specs/vertical-tabs-hover-sidecar/TECH.md`)
 
-Match the id used by the sibling `PRODUCT.md` when one exists. `specs-driven/` should contain only id-named directories as direct children.
+Match the id used by the sibling `PRODUCT.md` when one exists. `specs/` should contain only id-named directories as direct children.
 
-The sibling gate state file is `specs-driven/<id>/GATES.json`. It stores only `version`, `product.status`, and `tech.status`; statuses may only be `pending` or `approved`.
+The sibling gate state file is `specs/<id>/GATES.json`. It stores only `version`, `product.status`, and `tech.status`; statuses may only be `pending` or `approved`.
 
 Ticket / issue references are optional. If the user has a Linear ticket, GitHub issue, or GitLab issue, use its id. If they don't, ask them for a feature name to use as the directory. Only create a new Linear ticket, GitHub issue, or GitLab issue when the user explicitly asks for one; in that case use the available Linear, GitHub, or GitLab tools respectively, and ask the user directly if team, labels, or repo are unclear.
 

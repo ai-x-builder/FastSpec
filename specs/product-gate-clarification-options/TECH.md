@@ -2,7 +2,7 @@
 
 ## Context
 
-The approved product behavior is in `specs-driven/product-gate-clarification-options/PRODUCT.md`. This tech spec translates that behavior into changes to the spec workflow skill text; it does not redefine the PRODUCT Review Gate behavior.
+The approved product behavior is in `specs/product-gate-clarification-options/PRODUCT.md`. This tech spec translates that behavior into changes to the spec workflow skill text; it does not redefine the PRODUCT Review Gate behavior.
 
 Relevant current files:
 
@@ -62,7 +62,7 @@ Validation is text-based because the change is instruction-only:
 - Inspect `skills/spec-driven-workflow/SKILL.md` and confirm the PRODUCT Review Gate describes the full blocker list, one-question-at-a-time clarification, 1-2 suggested options, non-blocking assumptions, and no TECH while blockers remain. Covers B1-B15 at the top-level workflow.
 - Inspect `skills/spec-write-product/SKILL.md` and confirm the product-writing skill contains the same gate handoff behavior without changing the required `PRODUCT.md` structure. Covers B1-B15 for the actual product phase skill.
 - Inspect `skills/spec-write-tech/SKILL.md` and confirm no change is required because it already treats approved PRODUCT and no remaining blockers as prerequisites.
-- Inspect `specs-driven/product-gate-clarification-options/GATES.json` and confirm `product.status` is `approved` and `tech.status` remains `pending` after writing this TECH spec.
+- Inspect `specs/product-gate-clarification-options/GATES.json` and confirm `product.status` is `approved` and `tech.status` remains `pending` after writing this TECH spec.
 - Run `git diff --check` to catch trailing whitespace or patch formatting issues.
 
 ## Risks and Mitigations

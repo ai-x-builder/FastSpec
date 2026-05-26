@@ -11,12 +11,12 @@ Implement an approved feature from reviewed `PRODUCT.md` and `TECH.md`.
 
 Use this skill only after the relevant product and technical specs are approved enough to start implementation. The goal is to build the feature described by the specs while keeping the checked-in specs and the implementation aligned as the work evolves.
 
-Approved specs should live directly under an id-named directory in `specs-driven/`, for example:
+Approved specs should live directly under an id-named directory in `specs/`, for example:
 
-- `specs-driven/APP-1234/PRODUCT.md`, `specs-driven/APP-1234/TECH.md`, and `specs-driven/APP-1234/GATES.json`
-- `specs-driven/gh-4567/PRODUCT.md`, `specs-driven/gh-4567/TECH.md`, and `specs-driven/gh-4567/GATES.json`
-- `specs-driven/gl-7890/PRODUCT.md`, `specs-driven/gl-7890/TECH.md`, and `specs-driven/gl-7890/GATES.json`
-- `specs-driven/vertical-tabs-hover-sidecar/PRODUCT.md`, `specs-driven/vertical-tabs-hover-sidecar/TECH.md`, and `specs-driven/vertical-tabs-hover-sidecar/GATES.json`
+- `specs/APP-1234/PRODUCT.md`, `specs/APP-1234/TECH.md`, and `specs/APP-1234/GATES.json`
+- `specs/gh-4567/PRODUCT.md`, `specs/gh-4567/TECH.md`, and `specs/gh-4567/GATES.json`
+- `specs/gl-7890/PRODUCT.md`, `specs/gl-7890/TECH.md`, and `specs/gl-7890/GATES.json`
+- `specs/vertical-tabs-hover-sidecar/PRODUCT.md`, `specs/vertical-tabs-hover-sidecar/TECH.md`, and `specs/vertical-tabs-hover-sidecar/GATES.json`
 
 The id should match the sibling `PRODUCT.md`, `TECH.md`, and `GATES.json` files. For work that entered spec-driven workflow, all three files are required before implementation. If a change is small enough that both specs would be excessive, it should skip spec-driven workflow instead of using this skill.
 

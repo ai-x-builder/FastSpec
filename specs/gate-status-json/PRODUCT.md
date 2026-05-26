@@ -29,7 +29,7 @@ The current spec workflow defines PRODUCT and TECH review gates, but the gate pa
 
 ## Behavior
 
-B1. Each spec directory that uses spec-driven workflow contains exactly one gate state file at `specs-driven/<id>/GATES.json`.
+B1. Each spec directory that uses spec-driven workflow contains exactly one gate state file at `specs/<id>/GATES.json`.
 
 B2. `GATES.json` uses this minimal JSON shape:
 

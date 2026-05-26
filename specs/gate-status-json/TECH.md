@@ -16,7 +16,7 @@ The repository is documentation-first for this workflow: the implementation surf
 
 Update the workflow documentation in place, keeping the current staged model intact.
 
-1. In `skills/spec-driven-workflow/SKILL.md`, add `specs-driven/<id>/GATES.json` as the required gate-state artifact once a task enters spec-driven workflow. Define the minimal schema exactly as:
+1. In `skills/spec-driven-workflow/SKILL.md`, add `specs/<id>/GATES.json` as the required gate-state artifact once a task enters spec-driven workflow. Define the minimal schema exactly as:
 
    ```json
    {
@@ -62,8 +62,8 @@ Update the workflow documentation in place, keeping the current staged model int
 
 Validate the documentation-only implementation with focused repository checks:
 
-- Run `jq . specs-driven/gate-status-json/GATES.json` to verify the example gate state file is valid JSON.
-- Run `rg "GATES\\.json|product\\.status|tech\\.status|pending|approved" skills specs-driven/gate-status-json` to confirm all relevant skill docs and this spec mention the new gate-state contract.
+- Run `jq . specs/gate-status-json/GATES.json` to verify the example gate state file is valid JSON.
+- Run `rg "GATES\\.json|product\\.status|tech\\.status|pending|approved" skills specs/gate-status-json` to confirm all relevant skill docs and this spec mention the new gate-state contract.
 - Review `skills/spec-driven-workflow/SKILL.md`, `skills/spec-write-product/SKILL.md`, `skills/spec-write-tech/SKILL.md`, and `skills/spec-implement/SKILL.md` to ensure no references introduce `sha256`, `reviewedRevision`, timestamps, approvers, or multi-artifact support.
 - Confirm no implementation code, scripts, hooks, or CI files are added.
 

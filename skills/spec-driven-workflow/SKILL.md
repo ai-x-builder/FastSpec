@@ -13,20 +13,20 @@ Use this skill for significant features where written specs will improve impleme
 
 Once a task enters spec-driven workflow, both specs and the gate state file are required:
 
-- `specs-driven/<id>/PRODUCT.md`
-- `specs-driven/<id>/TECH.md`
-- `specs-driven/<id>/GATES.json`
+- `specs/<id>/PRODUCT.md`
+- `specs/<id>/TECH.md`
+- `specs/<id>/GATES.json`
 
 ### id-named
 
 `<id>` should match the product and tech spec skills:
 
-- a Linear ticket number, such as `specs-driven/APP-1234/PRODUCT.md`
-- a GitHub issue id prefixed with `gh-`, such as `specs-driven/gh-4567/PRODUCT.md`
-- a GitLab issue id prefixed with `gl-`, such as `specs-driven/gl-7890/PRODUCT.md`
-- a short kebab-case feature name, such as `specs-driven/vertical-tabs-hover-sidecar/PRODUCT.md`
+- a Linear ticket number, such as `specs/APP-1234/PRODUCT.md`
+- a GitHub issue id prefixed with `gh-`, such as `specs/gh-4567/PRODUCT.md`
+- a GitLab issue id prefixed with `gl-`, such as `specs/gl-7890/PRODUCT.md`
+- a short kebab-case feature name, such as `specs/vertical-tabs-hover-sidecar/PRODUCT.md`
 
-`specs-driven/` should contain only id-named directories as direct children. Do not create engineer-named subdirectories there.
+`specs/` should contain only id-named directories as direct children. Do not create engineer-named subdirectories there.
 
 Ticket / issue references are optional. If the user has a Linear ticket, GitHub issue, or GitLab issue, use its id. If they do not, ask for a short feature name to use as the directory id. Only create a new ticket or issue when the user explicitly asks for one; use the relevant Linear, GitHub, or GitLab tools, and ask the user directly if required project, team, repo, labels, or metadata are unclear.
 

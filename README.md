@@ -45,13 +45,13 @@ Most agent workflows rely on conversation history, ad hoc planning, or implement
 User request
    |
    v
-specs-driven/<id>/PRODUCT.md
+specs/<id>/PRODUCT.md
    |
    v
 PRODUCT Review Gate -> GATES.json product.status = approved
    |
    v
-specs-driven/<id>/TECH.md
+specs/<id>/TECH.md
    |
    v
 TECH Review Gate -> GATES.json tech.status = approved
@@ -123,9 +123,9 @@ Use spec-driven workflow to design and implement saved report filters.
 The workflow will decide whether the change warrants specs. If it does, it creates:
 
 ```text
-specs-driven/<id>/PRODUCT.md
-specs-driven/<id>/TECH.md
-specs-driven/<id>/GATES.json
+specs/<id>/PRODUCT.md
+specs/<id>/TECH.md
+specs/<id>/GATES.json
 ```
 
 ### Example
@@ -172,7 +172,7 @@ Primary documentation lives in the skills themselves:
 - [spec-write-tech](./skills/spec-write-tech/SKILL.md)
 - [spec-implement](./skills/spec-implement/SKILL.md)
 
-Example specs live in [specs-driven](./specs-driven).
+Example specs live in [specs](./specs).
 
 ---
 
@@ -203,7 +203,7 @@ flowchart TD
 | `skills/spec-write-product` | Produces behavior-first `PRODUCT.md` files and manages PRODUCT Review Gate handoff. |
 | `skills/spec-write-tech` | Produces implementation-oriented `TECH.md` files from approved product specs. |
 | `skills/spec-implement` | Implements only after both gates pass and keeps specs aligned with shipped behavior. |
-| `specs-driven` | Stores checked-in product specs, tech specs, and gate-state examples by feature id. |
+| `specs` | Stores checked-in product specs, tech specs, and gate-state examples by feature id. |
 
 ---
 
@@ -216,7 +216,7 @@ flowchart TD
 │   ├── spec-write-product/
 │   ├── spec-write-tech/
 │   └── spec-implement/
-├── specs-driven/
+├── specs/
 │   └── <feature-id>/
 │       ├── PRODUCT.md
 │       ├── TECH.md
@@ -237,8 +237,8 @@ No package dependencies are required.
 ### Run checks
 
 ```bash
-find skills specs-driven -name '*.md' -print
-find specs-driven -name 'GATES.json' -exec jq . {} \;
+find skills specs -name '*.md' -print
+find specs -name 'GATES.json' -exec jq . {} \;
 git diff --check
 ```
 

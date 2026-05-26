@@ -22,16 +22,16 @@ The spec should describe behavior from that consumer's perspective: the shape of
 
 Implementation details, validation, and test planning live in a companion `TECH.md`, produced later by the `spec-write-tech` skill. Do not write or update `TECH.md` in the same phase as `PRODUCT.md`. After creating or materially changing `PRODUCT.md`, create or update sibling `GATES.json` with both statuses set to `pending`, then stop at the PRODUCT Review Gate and wait for the user to approve the product spec or explicitly ask to continue to the TECH phase.
 
-Write specs to `specs-driven/<id>/PRODUCT.md`, where `<id>` is one of:
+Write specs to `specs/<id>/PRODUCT.md`, where `<id>` is one of:
 
-- a Linear ticket number (e.g. `specs-driven/APP-1234/PRODUCT.md`)
-- a GitHub issue id, prefixed with `gh-` (e.g. `specs-driven/gh-4567/PRODUCT.md`)
-- a GitLab issue id, prefixed with `gl-` (e.g. `specs-driven/gl-7890/PRODUCT.md`)
-- a short kebab-case feature name (e.g. `specs-driven/vertical-tabs-hover-sidecar/PRODUCT.md`)
+- a Linear ticket number (e.g. `specs/APP-1234/PRODUCT.md`)
+- a GitHub issue id, prefixed with `gh-` (e.g. `specs/gh-4567/PRODUCT.md`)
+- a GitLab issue id, prefixed with `gl-` (e.g. `specs/gl-7890/PRODUCT.md`)
+- a short kebab-case feature name (e.g. `specs/vertical-tabs-hover-sidecar/PRODUCT.md`)
 
-`specs-driven/` should contain only id-named directories as direct children — no engineer-named subdirectories.
+`specs/` should contain only id-named directories as direct children — no engineer-named subdirectories.
 
-The sibling gate state file is `specs-driven/<id>/GATES.json`. For new specs or materially changed product specs, it should contain:
+The sibling gate state file is `specs/<id>/GATES.json`. For new specs or materially changed product specs, it should contain:
 
 ```json
 {

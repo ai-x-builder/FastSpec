@@ -18,7 +18,7 @@ Agents can currently produce `PRODUCT.md` and `TECH.md` together, start technica
 
 ## Non-goals
 
-- Changing the `specs-driven/<id>/` path convention.
+- Changing the `specs/<id>/` path convention.
 - Adding new tooling, scripts, or generated metadata.
 - Rewriting the behavior example reference.
 
@@ -30,7 +30,7 @@ B2. During intake, the agent separates unresolved questions into blocking and no
 
 B3. The agent explicitly decides whether the work needs spec-driven workflow. Small, local, low-risk fixes may skip the workflow with a brief rationale and proceed directly to implementation and verification.
 
-B4. If the agent decides to enter spec-driven workflow, both `specs-driven/<id>/PRODUCT.md` and `specs-driven/<id>/TECH.md` become required outputs for that workflow.
+B4. If the agent decides to enter spec-driven workflow, both `specs/<id>/PRODUCT.md` and `specs/<id>/TECH.md` become required outputs for that workflow.
 
 B5. The product phase creates only `PRODUCT.md`. It describes user-visible behavior, consumer-facing API behavior, states, transitions, edge cases, permissions, failures, cancellations, and invariants. It does not include implementation plans, module boundaries, data flow, algorithms, or testing strategy.
 
