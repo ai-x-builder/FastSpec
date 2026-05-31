@@ -51,8 +51,8 @@ Required sections:
    - `app/src/workspace/workspace.rs (120-220)` — state and event handling that will likely change
    Reference `PRODUCT.md` for user-visible behavior rather than restating it.
 2. **Proposed changes** — The implementation plan: which modules change, new types/APIs/state being introduced, data flow, ownership boundaries, and how the design follows existing patterns. Call out tradeoffs when there is more than one reasonable path.
-3. **Product behavior mapping** — Map important numbered Behavior invariants from `PRODUCT.md` to the implementation areas and validation approach. Do not redefine product behavior.
-4. **Testing and validation** — How the implementation will be verified against the product behavior. Owns everything about proving the feature works: unit tests, integration tests, manual steps, screenshots, videos, and any other verification. Reference the numbered Behavior invariants from `PRODUCT.md` directly rather than restating them; each important invariant should map to a concrete test or verification step. For Figma-backed UI work, name the key screens, states, and viewports that need visual verification. This section is where validation lives — `PRODUCT.md` intentionally does not have a Validation section.
+3. **Product behavior mapping** — Map important numbered Behavior invariants from `PRODUCT.md` to the implementation areas and validation approach. When `PRODUCT.md` includes BDD-style examples with IDs such as `B4-E1`, map important examples alongside their parent `B*` invariants. Do not redefine product behavior.
+4. **Testing and validation** — How the implementation will be verified against the product behavior. Owns everything about proving the feature works: unit tests, integration tests, manual steps, screenshots, videos, and any other verification. Reference the numbered Behavior invariants from `PRODUCT.md` directly rather than restating them; each important invariant should map to a concrete test or verification step. When important BDD-style examples exist, decide whether each example maps to a unit test, integration test, end-to-end test, manual check, screenshot, or other validation evidence based on risk and repository patterns. For Figma-backed UI work, name the key screens, states, and viewports that need visual verification. This section is where validation lives — `PRODUCT.md` intentionally does not have a Validation section.
 
 Conditional required sections:
 
@@ -89,7 +89,7 @@ If Context and Proposed changes end up describing the same files and state from 
 - Ground the plan in actual codebase structure and patterns.
 - Prefer concrete implementation guidance over generic architecture language.
 - Explain why the proposed design fits this repo.
-- Reference `PRODUCT.md` for behavior instead of restating it.
+- Reference `PRODUCT.md` for behavior instead of restating it, including any important `B*-E*` examples that clarify acceptance-relevant scenarios.
 - For Figma-backed UI work, map the approved visual contract to existing components, tokens, assets, and verification steps before proposing new UI primitives.
 - Use Mermaid diagrams when they materially clarify technical flow or structure, and omit them when prose is clearer.
 - If technical research shows product behavior is infeasible or should change, return to `PRODUCT.md`; do not silently redefine behavior in `TECH.md`.

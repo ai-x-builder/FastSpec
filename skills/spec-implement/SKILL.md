@@ -44,7 +44,7 @@ Treat:
 - `PRODUCT.md` as the source of truth for user-facing behavior
 - `TECH.md` as the source of truth for architecture, sequencing, tradeoffs, risks, and validation
 
-Make sure you understand the expected behavior, constraints, risks, and validation plan before writing code.
+Make sure you understand the expected behavior, constraints, risks, and validation plan before writing code. When `PRODUCT.md` includes BDD-style examples such as `B4-E1`, treat important examples as clarifying acceptance scenarios under their parent behavior invariants.
 
 For Figma-backed UI work, also consult the Figma source or the recorded design context before changing code. If useful, use `spec-use-figma-design` to refresh the visual verification checklist from the approved specs and available design material.
 
@@ -65,6 +65,7 @@ During implementation:
 
 - keep behavior aligned with `PRODUCT.md`
 - keep architecture and sequencing aligned with `TECH.md`
+- keep important `B*-E*` examples aligned with the shipped behavior when examples clarify acceptance-relevant scenarios
 - add or update tests and verification artifacts as the work lands
 - for Figma-backed UI work, keep the implementation aligned with the approved visual contract and design implementation mapping
 
@@ -89,7 +90,7 @@ The PR should describe the feature that actually ships, not just the initial dra
 
 ### 5. Verify against the specs
 
-Before considering the work complete, verify that the code matches both current specs and that `GATES.json` has both statuses set to `approved`.
+Before considering the work complete, verify that the code matches both current specs, including any important `B*-E*` examples, and that `GATES.json` has both statuses set to `approved`.
 
 Prefer:
 

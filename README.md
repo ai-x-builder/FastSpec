@@ -1,7 +1,7 @@
 # Spec-Driven Development
 
 <p align="center">
-  <strong>Portable agent skills for product-first, gated, spec-driven feature delivery.</strong>
+  <strong>Portable agent skills for behavior-first, gated, spec-driven feature delivery.</strong>
 </p>
 
 <p align="center">
@@ -23,7 +23,7 @@
 
 ## Overview
 
-`Spec-Driven Development` is a portable skill pack for engineers and agent operators who want substantial work to move through explicit product and technical review gates before implementation.
+`Spec-Driven Development` is a portable skill pack for engineers and agent operators who want substantial work to move through explicit product and technical review gates before implementation. It is behavior-first SDD: product behavior is captured as stable invariants, with optional BDD-style examples when concrete scenarios help remove ambiguity.
 
 It installs globally into `~/.agents/skills/` and can be used by skill-compatible coding agents and CLIs including Claude Code, OpenClaw, Codex, Cursor, Droid, Gemini CLI, and GitHub Copilot.
 
@@ -35,7 +35,7 @@ Most agent workflows rely on conversation history, ad hoc planning, or implement
 
 `Spec-Driven Development` focuses on:
 
-- **Product behavior first** — user-visible behavior is captured in numbered, testable invariants before technical planning starts.
+- **Product behavior first** — user-visible behavior is captured in numbered, testable invariants before technical planning starts, with optional BDD-style examples for high-risk or ambiguous scenarios.
 - **Explicit review gates** — PRODUCT and TECH approvals are tracked in `GATES.json`, so future agents can see whether a phase is ready.
 - **Living specs** — product and tech specs stay in source control and are updated when implementation changes the agreed behavior or plan.
 
@@ -65,11 +65,11 @@ Implementation and verification
 ## Features
 
 - [x] **Staged spec workflow** — decide whether specs are needed, then move through PRODUCT, TECH, implementation, and verification in order.
-- [x] **Behavior-first product specs** — write `PRODUCT.md` as stable numbered invariants without implementation details.
+- [x] **Behavior-first product specs** — write `PRODUCT.md` as stable numbered invariants without implementation details, and add optional `B*-E*` examples when concrete scenarios clarify behavior.
 - [x] **Grounded technical specs** — write `TECH.md` from approved product behavior and current codebase research.
 - [x] **Gate status tracking** — persist review state in a minimal `GATES.json` file per spec directory.
 - [x] **Figma-backed design contracts** — turn provided Figma UI designs into product visual contracts, implementation mappings, and visual verification expectations.
-- [ ] **Automated validation helpers** — future scripts could lint spec directories and gate state consistency.
+- [x] **Lightweight spec linting** — validate spec directories, required files, required sections, and gate state consistency without package dependencies.
 
 ---
 
@@ -143,6 +143,22 @@ Expected flow:
 3. After approval, implement and verify against both specs.
 4. Keep PRODUCT.md, TECH.md, and GATES.json current if decisions change.
 ```
+
+### Behavior examples
+
+`PRODUCT.md` remains an invariant-first product contract. For behaviors where examples reduce ambiguity, add optional BDD-style examples under the relevant behavior item:
+
+```markdown
+B4. When a user exports a filtered report, the exported file contains only records matching the active filters.
+
+Examples for B4:
+- Example B4-E1: Export respects active date filter
+  Given the report is filtered to January 2026
+  When the user exports the report as CSV
+  Then the CSV contains only records dated within January 2026
+```
+
+Examples clarify `B*` behavior items; they do not replace the parent invariant or turn `PRODUCT.md` into an executable Gherkin test suite.
 
 ### Gate state
 
@@ -229,7 +245,8 @@ flowchart TD
 │       ├── PRODUCT.md
 │       ├── TECH.md
 │       └── GATES.json
-├── README-TEMPLATE.md
+├── scripts/
+│   └── lint-specs.mjs
 ├── README.md
 └── LICENSE
 ```
@@ -245,8 +262,8 @@ No package dependencies are required.
 ### Run checks
 
 ```bash
+node scripts/lint-specs.mjs
 find skills specs -name '*.md' -print
-find specs -name 'GATES.json' -exec jq . {} \;
 git diff --check
 ```
 
@@ -258,7 +275,7 @@ No build artifact is produced. The repository ships Markdown skill instructions 
 
 ## Roadmap
 
-- [ ] Add a lightweight spec directory linter.
+- [ ] Expand spec linting to validate behavior/example ID references across PRODUCT and TECH specs.
 - [ ] Add more end-to-end examples for common feature shapes.
 - [ ] Document upgrade guidance for existing teams adopting the workflow.
 

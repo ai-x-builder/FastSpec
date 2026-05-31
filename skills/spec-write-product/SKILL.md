@@ -78,7 +78,7 @@ Do not silently drop design context; an explicit "none" or access limitation is 
 Required sections:
 
 1. **Summary** — 1–3 sentences describing the feature and desired outcome.
-2. **Behavior** — The meat of the spec. An exhaustive English description of how the feature works, written as stable numbered, testable invariants such as `B1`, `B2`, and `B3`. See "The Behavior section" below — this is where the spec earns its length, and everything else should stay thin to avoid duplicating it.
+2. **Behavior** — The meat of the spec. An exhaustive description of how the feature works, written as stable numbered, testable invariants such as `B1`, `B2`, and `B3`. When concrete scenarios reduce ambiguity, include optional BDD-style examples under the relevant invariant. See "The Behavior section" below — this is where the spec earns its length, and everything else should stay thin to avoid duplicating it.
 
 Optional sections — include only when they add signal beyond the core. Omit the heading entirely if empty; do not write "None" as a placeholder.
 
@@ -89,7 +89,7 @@ Optional sections — include only when they add signal beyond the core. Omit th
 - **Diagram** — Include a Mermaid diagram only when it clarifies non-trivial product behavior, such as branching user journeys, role or permission interactions, object lifecycle states, complex state transitions, or cross-module product interactions. Omit diagrams for short linear flows or when the diagram would merely duplicate the numbered Behavior list.
 - **Open questions** — Prefer inline `**Open question (blocking):** ...` or `**Open question (non-blocking):** ...` next to the relevant behavior. Include a dedicated section only if there are multiple unresolved questions worth collecting. Non-blocking questions must state the current assumption and impact.
 
-Do not include Validation, Success criteria, or Testing sections. Validation and test planning live in the companion `TECH.md` (produced by `spec-write-tech`). Write Behavior as numbered invariants that are testable on their own — the tech spec can reference them directly.
+Do not include Validation, Success criteria, or Testing sections. Validation and test planning live in the companion `TECH.md` (produced by `spec-write-tech`). Write Behavior as numbered invariants that are testable on their own — the tech spec can reference them directly. Optional BDD-style examples clarify expected behavior; they do not prescribe test implementation.
 
 ## The Behavior section
 
@@ -128,6 +128,46 @@ When relevant, also cover:
 
 Length Behavior to match the feature. Trivial features may need a handful of invariants; complex features may need many, with sub-sections per flow or state. The rest of the spec should stay thin so Behavior can be as exhaustive as the feature requires without producing a bloated document overall. Err toward enumerating one more edge case rather than one fewer.
 
+### BDD-style examples
+
+Use BDD-style examples as an optional clarification layer under numbered Behavior invariants. The parent `B*` item remains the stable product contract; examples make concrete scenarios easier to review and later map to validation.
+
+Examples are encouraged when behavior involves branch-heavy rules, permissions, state machines, approval flows, filtering, exports, billing, migration, compatibility, error handling, or another area where a specific example reduces ambiguity.
+
+Omit examples for simple copy changes, small layout changes, obvious happy paths, broad visual contracts, or behavior that is already clearer as a concise invariant. Do not add examples mechanically to every `B*` item.
+
+When examples are useful:
+
+- place them directly under or immediately after the relevant `B*` invariant
+- give each example a stable ID derived from its parent behavior, such as `B4-E1` and `B4-E2`
+- give each example a short title that names the scenario, not the implementation mechanism
+- use lightweight Given / When / Then phrasing only when it improves clarity
+
+Recommended shape:
+
+```markdown
+B4. When a user exports a filtered report, the exported file contains only records matching the active filters.
+
+Examples for B4:
+- Example B4-E1: Export respects active date filter
+  Given the report is filtered to January 2026
+  When the user exports the report as CSV
+  Then the CSV contains only records dated within January 2026
+
+- Example B4-E2: Export preserves headers for empty results
+  Given the active filters match no records
+  When the user exports the report as CSV
+  Then the CSV is generated with headers and no data rows
+```
+
+Examples must remain product-facing. They describe observable preconditions, user or consumer actions, and observable outcomes. They must not describe internal modules, state layout, algorithms, selectors, mocks, fixtures, framework APIs, or test step definitions.
+
+Do not replace `PRODUCT.md` prose with full-file Gherkin. `Feature:`, global `Scenario:` suites, tags, step definitions, and executable-test syntax are not required and should not replace numbered product behavior.
+
+Examples clarify behavior but do not become the only source of behavior. The parent `B*` invariant should remain understandable and reviewable even if its examples are omitted. If an example reveals missing product behavior, update or add the relevant `B*` invariant rather than relying on the example alone.
+
+If an example conflicts with its parent invariant or another Behavior item, treat the conflict as a blocking product question until the product behavior is reconciled.
+
 ### Mermaid diagrams
 
 Use Mermaid diagrams in `PRODUCT.md` sparingly. A diagram is appropriate when it makes complex user-visible behavior easier to review, such as a branched journey, lifecycle, permission path, state transition, or cross-module product interaction. Prefer the Mermaid type that matches the need: flowchart for branching flows, state diagram for lifecycles, and sequence diagram for user-visible cross-system interactions.
@@ -155,6 +195,7 @@ If you find yourself writing the same idea in Summary, Problem, Goals, and Behav
 
 - Prefer concrete, observable behavior over aspirational wording.
 - Write Behavior as stable numbered invariants; use prose inside an invariant only when it improves clarity.
+- Add optional BDD-style examples under important behavior invariants when concrete scenarios reduce ambiguity.
 - Capture invariants that must not regress and edge cases that are easy to miss.
 - For Figma-backed UI work, extract a visual contract instead of only storing the link.
 - Use Mermaid diagrams only when they clarify complex product behavior; avoid decorative, oversized, vague, or redundant diagrams.

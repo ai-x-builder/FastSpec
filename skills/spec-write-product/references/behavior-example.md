@@ -32,12 +32,29 @@ B10. Malformed tables fall back gracefully:
     - Ragged rows (some rows have fewer or more cells than the header) → missing cells render empty; extra cells are shown, with the header row extended visually if possible. The block should never silently drop data.
     - Unclosed table (last row truncated mid-stream) → rendered as a partial table; see B11.
 
+Examples for B10:
+- Example B10-E1: Missing separator stays plain text
+  Given an output block contains pipe-delimited rows with no valid header separator row
+  When the block renders
+  Then the rows remain preformatted text rather than rendering as a table
+
+- Example B10-E2: Ragged rows preserve data
+  Given a table row has more cells than the header row
+  When the table renders
+  Then the extra cell content remains visible and is not silently dropped
+
 B11. Streaming output: while a command is still producing rows, the table renders incrementally. New rows append as they arrive. The header row locks in as soon as the separator line is received; rows before the separator render as plain text until the table is recognized.
 
 B12. Selection and copy:
     - Selecting across cells with the mouse or keyboard selects their visible text content.
     - Copying the selection produces tab-separated plain text by default (one row per line, cells separated by tabs). An affordance (context menu, shortcut) lets the user copy the original markdown source instead.
     - Copying the entire block preserves the original markdown source verbatim.
+
+Examples for B12:
+- Example B12-E1: Copy selected cells as tab-separated text
+  Given the user selects visible text across two table cells in the same row
+  When the user copies the selection
+  Then the copied plain text separates the cell values with a tab
 
 B13. Search within a block (find-in-block) matches against cell text content. Matches highlight in place in the rendered cell; navigating matches scrolls the table into view, including horizontally if the match is in an off-screen column.
 

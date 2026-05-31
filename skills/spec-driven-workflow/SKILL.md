@@ -110,6 +110,7 @@ Use the `spec-write-product` skill to produce it. The product spec should define
 - what problem is being solved
 - the desired user experience
 - invariants and edge cases
+- optional BDD-style examples under important numbered invariants when concrete scenarios reduce ambiguity
 - every user-visible state, transition, and behavior that must not regress
 - the design source and visual contract for Figma-backed UI work
 - blocking and non-blocking product open questions
@@ -156,7 +157,7 @@ After the PRODUCT Review Gate passes and `product.status` is `approved`, use the
 - implementation plan and key tradeoffs
 - risks and mitigations
 - testing and validation plan
-- mapping from numbered `PRODUCT.md` behaviors to concrete verification
+- mapping from numbered `PRODUCT.md` behaviors and any important BDD-style examples to concrete verification
 - for Figma-backed UI work, design implementation mapping and visual verification planning
 
 `TECH.md` must not redefine product behavior or conflict with `PRODUCT.md`. If technical research shows the product behavior is infeasible or should change, return to the product phase, update `PRODUCT.md`, and pass PRODUCT Review Gate again before updating `TECH.md`.
@@ -237,7 +238,7 @@ The checked-in specs should describe the feature that actually ships, not just t
 
 ### 9. Verify behavior against the specs
 
-Before considering the work complete, make sure verification maps back to both specs and that `GATES.json` has both statuses set to `approved`. Prefer tests and artifacts that validate the product behavior directly:
+Before considering the work complete, make sure verification maps back to both specs and that `GATES.json` has both statuses set to `approved`. Prefer tests and artifacts that validate the product behavior directly, including any important BDD-style examples recorded under `PRODUCT.md` behavior items:
 
 - unit tests using the repository's existing test framework
 - integration or end-to-end tests for critical user flows
