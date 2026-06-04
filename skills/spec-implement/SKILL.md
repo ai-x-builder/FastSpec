@@ -48,7 +48,23 @@ Make sure you understand the expected behavior, constraints, risks, and validati
 
 For Figma-backed UI work, also consult the Figma source or the recorded design context before changing code. If useful, use `spec-use-figma-design` to refresh the visual verification checklist from the approved specs and available design material.
 
-### 2. Offer optional implementation aids for large features
+### 2. Safe implementation loop
+
+Before editing code:
+
+- reconfirm that `PRODUCT.md`, `TECH.md`, and `GATES.json` exist
+- reconfirm that `product.status` and `tech.status` are both `approved`
+- if the repository uses Git, check the current branch and working tree status
+- identify the core files implied by `TECH.md`
+- search for existing files, tests, components, helpers, or patterns before creating new ones
+- read each file immediately before editing it
+- inspect at least one relevant call site or usage point before changing a function, class, component, API, or data model
+- prefer extending existing tests over creating new test files when existing tests cover the affected behavior or module
+- keep changes limited to what is needed by the approved specs
+- follow the target repository's local style and dependency boundaries
+- clean up imports, includes, dependencies, or module references made unused by the change, without performing unrelated cleanup
+
+### 3. Offer optional implementation aids for large features
 
 For large or long-running features, optionally offer one of these aids to the user before implementation begins:
 
@@ -57,7 +73,7 @@ For large or long-running features, optionally offer one of these aids to the us
 
 These are optional aids, not required deliverables. Offer them when they would reduce confusion or help future agents avoid re-exploring the same paths.
 
-### 3. Plan and implement against the specs
+### 4. Plan and implement against the specs
 
 Break the work into concrete implementation steps, then implement the feature against the approved specs.
 
@@ -71,7 +87,7 @@ During implementation:
 
 Use the same PR for the specs and implementation when practical so the full feature evolution is reviewable in one place.
 
-### 4. Update specs as the implementation evolves
+### 5. Update specs as the implementation evolves
 
 If implementation reveals that the intended behavior or design should change, update the checked-in specs rather than letting them go stale.
 
@@ -81,6 +97,8 @@ In particular:
 - update `TECH.md` when architecture, sequencing, module boundaries, or validation strategy change
 - for Figma-backed UI work, update `PRODUCT.md` when acceptance-relevant visual contract details change, and update `TECH.md` when design mapping or visual verification strategy changes
 - update `GATES.json` in the same step: PRODUCT changes set both statuses to `pending`; TECH-only changes set `tech.status` to `pending`
+- if implementation requires changing externally visible behavior, update `PRODUCT.md`, set both statuses to `pending`, and return to PRODUCT Review Gate
+- if implementation requires changing architecture, sequencing, module boundaries, dependencies, or validation strategy without changing product behavior, update `TECH.md`, set `tech.status` to `pending`, and return to TECH Review Gate
 - after any status reset, return to the relevant review gate and get the affected status back to `approved` before considering implementation complete
 - keep those updates in the same PR as the corresponding code changes
 
@@ -88,7 +106,7 @@ If a `PRODUCT.md` change invalidates `TECH.md`, update `TECH.md` from the latest
 
 The PR should describe the feature that actually ships, not just the initial draft of the specs.
 
-### 5. Verify against the specs
+### 6. Verify against the specs
 
 Before considering the work complete, verify that the code matches both current specs, including any important `B*-E*` examples, and that `GATES.json` has both statuses set to `approved`.
 

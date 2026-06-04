@@ -153,6 +153,7 @@ After the PRODUCT Review Gate passes and `product.status` is `approved`, use the
 `TECH.md` should cover:
 
 - how the current system works
+- codebase research evidence in Context, such as core files read, usage points inspected, existing tests found, reusable local patterns, validation commands, and non-blocking technical assumptions
 - modules, types, interfaces, data flow, or ownership boundaries that will change
 - implementation plan and key tradeoffs
 - risks and mitigations
@@ -197,6 +198,8 @@ If the gate does not pass, update `TECH.md` and keep `tech.status` as `pending`.
 ### 7. Implement approved specs
 
 After both review gates pass and both statuses are `approved` in `GATES.json`, use the `spec-implement` skill to build from the approved `PRODUCT.md` and `TECH.md`.
+
+Before editing code, follow the safe implementation loop in `spec-implement`: check the working tree when using Git, identify core files, search for existing files and tests before creating new ones, read files before editing, inspect relevant usage points before changing APIs or data models, prefer existing tests, and keep cleanup limited to the approved work.
 
 For Figma-backed UI work, the implementer should consult the Figma source or recorded design context before changing code, and can use `spec-use-figma-design` to refresh the visual verification checklist.
 
@@ -251,6 +254,7 @@ Before considering the work complete, make sure verification maps back to both s
 - Skip the workflow for small work; once you enter it, enforce the gates.
 - Keep product specs behavior-oriented and implementation-light.
 - Keep tech specs implementation-oriented and grounded in current codebase patterns.
+- Keep implementation scoped to the approved specs, using local patterns and dependency boundaries instead of broad cleanup.
 - Use review time to validate specs and behavior, not to over-index on code style nits.
 
 ## Related Skills

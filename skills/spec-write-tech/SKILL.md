@@ -38,7 +38,19 @@ If any prerequisite is missing, do not write `TECH.md`. Return to `spec-write-pr
 
 ## Research before writing
 
-Before drafting, read the latest reviewed `PRODUCT.md`, inspect the relevant code, and identify the main files, types, data flow, and ownership boundaries. Do not guess about current architecture when the code can be inspected directly.
+Before drafting, read the latest reviewed `PRODUCT.md`, inspect the relevant code, and identify the main files, types, data flow, and ownership boundaries. Collect enough codebase evidence to make the plan grounded rather than speculative.
+
+In `TECH.md` Context, record:
+
+- core files read in full
+- relevant call sites, usage examples, consumers, or other usage points inspected
+- current data flow, state flow, or ownership boundaries
+- existing tests found and whether they should be extended
+- repository patterns, APIs, components, helpers, or local conventions to reuse
+- validation commands discovered from repository files
+- non-blocking technical assumptions that remain, with impact
+
+Do not infer current architecture from file names, function names, class names, component names, or other names alone when source code can be inspected directly.
 
 For Figma-backed UI work, use `spec-use-figma-design` when available to turn the approved design source and visual contract into a concrete implementation mapping. If direct Figma access is unavailable, use the recorded design context, screenshots, exports, or user-provided notes and record the limitation.
 
@@ -46,7 +58,7 @@ For Figma-backed UI work, use `spec-use-figma-design` when available to turn the
 
 Required sections:
 
-1. **Context** — What's being built, how the current system works in the area being changed, and the most relevant files with line references. Combine the "problem," "current state," and "relevant code" into one grounded section. Example references:
+1. **Context** — What's being built, how the current system works in the area being changed, the codebase research evidence collected before drafting, and the most relevant files with line references. Combine the "problem," "current state," and "relevant code" into one grounded section. Example references:
    - `app/src/workspace/mod.rs:42` — entry point for the user flow
    - `app/src/workspace/workspace.rs (120-220)` — state and event handling that will likely change
    Reference `PRODUCT.md` for user-visible behavior rather than restating it.
@@ -89,6 +101,7 @@ If Context and Proposed changes end up describing the same files and state from 
 - Ground the plan in actual codebase structure and patterns.
 - Prefer concrete implementation guidance over generic architecture language.
 - Explain why the proposed design fits this repo.
+- Do not infer current behavior or architecture from names alone when source code can be inspected directly.
 - Reference `PRODUCT.md` for behavior instead of restating it, including any important `B*-E*` examples that clarify acceptance-relevant scenarios.
 - For Figma-backed UI work, map the approved visual contract to existing components, tokens, assets, and verification steps before proposing new UI primitives.
 - Use Mermaid diagrams when they materially clarify technical flow or structure, and omit them when prose is clearer.
