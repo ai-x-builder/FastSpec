@@ -66,6 +66,19 @@ Required sections:
 3. **Product behavior mapping** — Map important numbered Behavior invariants from `PRODUCT.md` to the implementation areas and validation approach. When `PRODUCT.md` includes BDD-style examples with IDs such as `B4-E1`, map important examples alongside their parent `B*` invariants. Do not redefine product behavior.
 4. **Testing and validation** — How the implementation will be verified against the product behavior. Owns everything about proving the feature works: unit tests, integration tests, manual steps, screenshots, videos, and any other verification. Reference the numbered Behavior invariants from `PRODUCT.md` directly rather than restating them; each important invariant should map to a concrete test or verification step. When important BDD-style examples exist, decide whether each example maps to a unit test, integration test, end-to-end test, manual check, screenshot, or other validation evidence based on risk and repository patterns. For Figma-backed UI work, name the key screens, states, and viewports that need visual verification. This section is where validation lives — `PRODUCT.md` intentionally does not have a Validation section.
 
+In `Testing and validation`, map important `PRODUCT.md` behavior IDs to concrete evidence.
+
+For each important `B*` invariant and each high-risk or ambiguity-prone `B*-E*` example, state whether it will be verified by:
+
+- unit test
+- integration or end-to-end test
+- manual workflow
+- screenshot, video, browser capture, or visual comparison
+- migration or compatibility check
+- log, telemetry, CLI output, or API response inspection
+
+If a behavior cannot be directly verified in the current environment, record the limitation, risk, and closest fallback check.
+
 Conditional required sections:
 
 - **Design implementation mapping** — Required for Figma-backed UI work. Map relevant Figma screens, frames, components, states, and assets to code areas, existing components, design-system primitives, tokens, icons, assets, and state/responsive implementation strategy. Record any intentional deviation from Figma with the reason, expected user-visible result, and whether PRODUCT re-approval is needed.

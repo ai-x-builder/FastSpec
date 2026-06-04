@@ -110,14 +110,55 @@ The PR should describe the feature that actually ships, not just the initial dra
 
 Before considering the work complete, verify that the code matches both current specs, including any important `B*-E*` examples, and that `GATES.json` has both statuses set to `approved`.
 
+Run the validation named in `TECH.md` before considering implementation complete.
+
+If `TECH.md` does not name exact commands, discover the repository's validation commands from local scripts, package metadata, CI config, Makefiles, task runners, or existing documentation.
+
+Run the smallest validation set that gives confidence for the approved specs and the actual changed files. When a validation command or artifact cannot be produced, state why, run the closest available fallback check, and record the residual risk.
+
 Prefer:
 
 - unit tests using the repository's existing test framework
 - integration or end-to-end tests for important user flows
-- manual verification artifacts, screenshots, or videos when useful for UI-heavy work
-- for Figma-backed UI work, screenshots, videos, browser captures, or concise manual comparison summaries for the relevant screens, states, and viewports unless capture is impossible
+- manual verification artifacts when useful for non-UI workflows
+- for UI-heavy or Figma-backed work, screenshots, videos, browser captures, or concise manual comparison summaries for the relevant screens, states, and viewports unless capture is impossible
 
-If visual capture is impossible for Figma-backed UI work, state what could not be captured, why, and what manual checks were performed instead. The final implementation report should name the Figma source or recorded design context checked and call out any known visual deviations.
+If visual capture is impossible for UI-heavy or Figma-backed work, state what could not be captured, why, and what manual checks were performed instead. For Figma-backed work, the final implementation report should name the Figma source or recorded design context checked and call out any known visual deviations.
+
+When validation fails, understand the failure before applying a fix:
+
+- inspect the failing output, logs, stack trace, screenshot, diff, or equivalent evidence
+- read at least one implementation, test, spec, or log context directly related to the failure before editing
+- determine whether the failure is an implementation bug, stale TECH plan, unclear PRODUCT behavior, environment issue, or pre-existing failure
+- make the smallest fix that addresses the understood cause
+- rerun the relevant validation
+
+Do not make speculative fixes. If confidence is low, inspect more code or return to the appropriate review gate.
+
+If validation shows the approved TECH plan is wrong but product behavior remains valid, update `TECH.md`, set `tech.status` to `pending`, and return to TECH Review Gate before continuing. If validation shows product behavior is unclear or must change, update `PRODUCT.md`, set both statuses to `pending`, and return to PRODUCT Review Gate before revising TECH or implementation.
+
+The final implementation report should use this evidence-oriented shape:
+
+```markdown
+Implementation complete.
+
+Specs checked:
+- PRODUCT.md: <path>
+- TECH.md: <path>
+- GATES.json: product=approved, tech=approved
+
+Validation run:
+- <command or artifact>: <pass/fail/not run>
+- <command or artifact>: <pass/fail/not run>
+
+Behavior evidence:
+- B1: <test/artifact/manual check>
+- B2: <test/artifact/manual check>
+- B4-E1: <test/artifact/manual check>
+
+Known limitations:
+- <none or concise residual risk>
+```
 
 ## Best Practices
 

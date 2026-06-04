@@ -144,6 +144,8 @@ Expected flow:
 4. Keep PRODUCT.md, TECH.md, and GATES.json current if decisions change.
 ```
 
+Implementation is complete only after the agent runs or explicitly accounts for validation. Final reports should name the commands, artifacts, or manual checks used and map important behavior IDs to the evidence that verified them.
+
 ### Behavior examples
 
 `PRODUCT.md` remains an invariant-first product contract. For behaviors where examples reduce ambiguity, add optional BDD-style examples under the relevant behavior item:
