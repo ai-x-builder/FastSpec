@@ -86,6 +86,13 @@ Only `pending` and `approved` are valid statuses.
 
 Example specs live in [`specs`](./specs).
 
+## Documentation
+
+- [Workflow](./docs/workflow.md): why the staged workflow exists and how it runs.
+- [Skills](./docs/skills.md): what each skill owns and how the skills coordinate.
+- [GATES.json](./docs/gates-json.md): why gate state is persisted and how status transitions work.
+- [Figma Workflow](./docs/figma-workflow.md): how Figma design context becomes specs, implementation mapping, and verification.
+
 ## License
 
 MIT
