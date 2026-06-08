@@ -25,11 +25,35 @@
 
 ## Install
 
+Install the skills for the agent you use.
+
+### Codex
+
 ```bash
-npx skills add ai-x-builder/Spec-Driven-Development -y -g
+npx skills add ai-x-builder/Spec-Driven-Development -y -g --agent codex
 ```
 
-The global install places the skills under `~/.agents/skills/` for compatible coding agents to discover.
+Codex uses the global universal skills directory:
+
+```text
+~/.agents/skills/<skill-name>/SKILL.md
+```
+
+### Claude Code
+
+```bash
+npx skills add ai-x-builder/Spec-Driven-Development -y -g --agent claude-code
+```
+
+Claude Code discovers global skills from:
+
+```text
+~/.claude/skills/<skill-name>/SKILL.md
+```
+
+If `CLAUDE_CONFIG_DIR` is set, the Claude Code global skills directory is `$CLAUDE_CONFIG_DIR/skills/`.
+
+Avoid running the generic global command without `--agent`; some supported targets, such as PromptScript, do not support global skill installation and can report failures even when the skills are installed for other agents.
 
 ## Usage
 
