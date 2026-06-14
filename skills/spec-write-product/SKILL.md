@@ -239,14 +239,14 @@ The gate passes only when:
 
 If the gate does not pass, revise `PRODUCT.md`, keep both statuses in `GATES.json` as `pending`, and remain in the product phase.
 
-For large features, the implementer may optionally keep a `DECISIONS.md` file summarizing concrete decisions made during design and implementation. Offer it when it would help future agents; otherwise skip it.
+Implementation evidence is recorded by Loop Runner in `LOOP_STATE.json`, `VERIFY.md`, and `REPORT.md`. Do not add separate decision-tracking artifacts unless a future approved spec introduces them.
 
 ## Related Skills
 
-- `spec-implement`
+- `spec-loop-runner`
 - `spec-use-figma-design`
 - `spec-write-tech`
-- `spec-driven-workflow`
+- `spec-workflow`
 
 ## Example Behavior section
 

@@ -2,7 +2,7 @@
 
 `GATES.json` is the persisted review-state file for each spec directory. It tells future agents and reviewers whether the PRODUCT and TECH review gates have passed.
 
-For every spec-driven feature, the file lives at:
+For every LoopSpec feature, the file lives at:
 
 ```text
 specs/<id>/GATES.json
@@ -37,6 +37,26 @@ Only these status values are allowed:
 - `pending`
 - `approved`
 
+## What GATES.json Does Not Store
+
+`GATES.json` intentionally does not store loop implementation state.
+
+Do not add:
+
+- content hashes
+- revision IDs
+- approval timestamps
+- approver names
+- comments
+- multiple product or tech artifacts
+- loop phase
+- iteration number
+- verification results
+- blockers or risks
+- custom workflow states
+
+Loop implementation state belongs in `LOOP_STATE.json`. Verification evidence belongs in `VERIFY.md`. Delivery summary belongs in `REPORT.md`.
+
 ## Why This File Exists
 
 The workflow needs a durable answer to a simple question: has the user approved the product behavior and the technical plan?
@@ -47,26 +67,9 @@ Chat history is not enough because:
 - it can be ambiguous
 - it can be separated from the pull request
 - it does not give scripts or reviewers a stable state to inspect
-- it can drift from the checked-in specs
+- it can drift from checked-in specs
 
 `GATES.json` makes review state explicit, local to the spec, and version-controlled.
-
-## Why The Model Is Minimal
-
-The file intentionally avoids fields such as:
-
-- content hashes
-- revision IDs
-- approval timestamps
-- approver names
-- comments
-- multiple product artifacts
-- multiple tech artifacts
-- custom workflow states
-
-The goal is not to replace code review, audit logs, tickets, or pull request history. The goal is to provide the smallest reliable state machine that an agent can use to decide whether it may advance.
-
-The minimal shape keeps the contract portable across agents and repositories.
 
 ## Status Meaning
 
@@ -76,7 +79,7 @@ The minimal shape keeps the contract portable across agents and repositories.
 
 `tech.status = "pending"` means `TECH.md` is not approved for implementation. The workflow must remain in or return to the TECH phase.
 
-`tech.status = "approved"` means the TECH Review Gate passed. Implementation may begin only if `product.status` is also `approved`.
+`tech.status = "approved"` means the TECH Review Gate passed. Loop Runner implementation may begin only if `product.status` is also `approved`.
 
 ## Valid State Combinations
 
@@ -138,13 +141,13 @@ Meaning:
 
 - Product behavior has been approved.
 - Technical plan has been approved.
-- Implementation may begin if the specs are still current.
+- Loop Runner implementation may begin if the specs are still current.
 
 ## Invalid Or Stale States
 
 `product.status = "pending"` and `tech.status = "approved"` should be treated as stale or invalid for forward progress.
 
-If PRODUCT is pending, TECH cannot safely remain approved because the technical plan depends on approved product behavior. The correct response is to revise and re-approve PRODUCT, then update TECH and pass the TECH gate again.
+If PRODUCT is pending, TECH cannot safely remain approved because the technical plan depends on approved product behavior. Revise and re-approve PRODUCT, then update TECH and pass the TECH gate again.
 
 Unknown status values, missing keys, extra keys, or malformed JSON are invalid.
 
@@ -198,7 +201,7 @@ Before writing `TECH.md`, confirm:
 - `product.status` is `approved`
 - no blocking product questions remain
 
-Before implementation, confirm:
+Before Loop Runner implementation, confirm:
 
 - `PRODUCT.md` exists
 - `TECH.md` exists
@@ -207,7 +210,7 @@ Before implementation, confirm:
 - `tech.status` is `approved`
 - `TECH.md` reflects the latest approved `PRODUCT.md`
 
-If any check fails, the agent should return to the relevant spec phase instead of continuing.
+If any check fails, return to the relevant spec phase instead of continuing.
 
 ## Linting
 
@@ -217,4 +220,10 @@ The repository includes a dependency-free lint script:
 node scripts/lint-specs.mjs
 ```
 
-The script validates that spec directories contain the required files and that `GATES.json` uses the supported shape and status values.
+The script validates spec directories and the supported gate shape. Loop artifacts are optional by default for compatibility with historical specs, but are validated when present.
+
+To require loop artifacts for one completed implementation:
+
+```bash
+node scripts/lint-specs.mjs --spec specs/<id> --require-loop-artifacts
+```

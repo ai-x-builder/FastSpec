@@ -1,6 +1,6 @@
 ---
 name: spec-use-figma-design
-description: Extract and apply Figma design context for spec-driven UI work across PRODUCT, TECH, and IMPLEMENT phases. Use when a spec-driven UI feature has a Figma URL or fallback design material so visual intent becomes a product contract, implementation mapping, and verification checklist.
+description: Extract and apply Figma design context for spec-driven UI work across PRODUCT, TECH, and Loop Runner implementation phases. Use when a spec-driven UI feature has a Figma URL or fallback design material so visual intent becomes a product contract, implementation mapping, and verification checklist.
 ---
 
 # spec-use-figma-design
@@ -11,14 +11,14 @@ Turn Figma-backed UI design context into phase-appropriate spec workflow materia
 
 Use this skill when a spec-driven feature has UI, interaction, layout, or visual design implications and the user provides a Figma URL or fallback design material. The goal is to make the design usable by future agents without relying on conversation memory.
 
-This skill supports the staged spec workflow. It does not replace `PRODUCT.md`, `TECH.md`, `GATES.json`, or human review gates. It must not approve gates, skip required specs, create alternate gate state, or require pixel-perfect validation by default.
+This skill supports the staged LoopSpec workflow. It does not replace `PRODUCT.md`, `TECH.md`, `GATES.json`, Loop Runner, or human review gates. It must not approve gates, skip required specs, create alternate gate state, or require pixel-perfect validation by default.
 
 ## Inputs
 
 Collect only the inputs needed for the current phase:
 
 - Figma URL, ideally with a specific frame, node, screen, or component
-- current phase: `PRODUCT`, `TECH`, or `IMPLEMENT`
+- current phase: `PRODUCT`, `TECH`, or Loop Runner implementation
 - feature scope: pages, components, flows, states, and viewports in scope
 - existing product or design-system context, when available
 - existing codebase context, when the phase needs implementation mapping
@@ -71,14 +71,15 @@ Output:
 
 TECH output may discuss components, tokens, CSS, state management, assets, and framework-specific choices because those belong in `TECH.md`, not `PRODUCT.md`.
 
-## IMPLEMENT phase output
+## Loop Runner implementation output
 
-When the current phase is `IMPLEMENT`, produce or refresh a visual verification checklist from the approved specs and available design material.
+When the current phase is Loop Runner implementation, produce or refresh a visual verification checklist from the approved specs and available design material.
 
 Output:
 
 - Figma source or fallback design context to check
 - screens, states, and viewports that must be captured or manually compared
+- `VERIFY.md` Design Verification entries for `feature_with_figma`
 - expected artifacts such as screenshots, videos, browser captures, or concise manual comparison summaries
 - known access limitations or capture limitations
 - known visual deviations that should be reported before completion
@@ -96,7 +97,7 @@ Portable agents may not have Figma API, MCP, browser, or plugin access. In that 
 
 ## Related Skills
 
-- `spec-driven-workflow`
+- `spec-workflow`
+- `spec-loop-runner`
 - `spec-write-product`
 - `spec-write-tech`
-- `spec-implement`

@@ -1,12 +1,18 @@
 # Workflow
 
-Spec-Driven Development is a staged workflow for substantial agent-driven work. It is designed to make product intent, technical planning, review state, and implementation evidence durable enough to survive across agent sessions, pull requests, and future maintenance.
+LoopSpec is a staged workflow for substantial agent-driven work. It keeps product intent, technical planning, review state, implementation state, verification evidence, and final reporting durable across agent sessions, pull requests, and future maintenance.
 
-The workflow is intentionally pragmatic. Small local bug fixes, narrow UI tweaks, and straightforward refactors can skip it. Once a change enters the workflow, the required artifacts are:
+The workflow is intentionally pragmatic. Small local bug fixes, narrow UI tweaks, and straightforward refactors can skip it. Once a change enters LoopSpec, the core artifacts are:
 
 - `specs/<id>/PRODUCT.md`
 - `specs/<id>/TECH.md`
 - `specs/<id>/GATES.json`
+
+During implementation, Loop Runner adds:
+
+- `specs/<id>/LOOP_STATE.json`
+- `specs/<id>/VERIFY.md`
+- `specs/<id>/REPORT.md`
 
 ## Why This Workflow Exists
 
@@ -15,18 +21,21 @@ Agent-driven implementation often fails for avoidable reasons:
 - Product intent lives only in chat history and is easy to lose.
 - Technical plans are written before product behavior is clear.
 - Review approval is implied instead of recorded.
-- Later implementation decisions drift away from the behavior that was originally accepted.
-- A future agent cannot tell whether a spec is current, stale, or approved.
+- Implementation decisions drift away from approved behavior.
+- Verification happens only at the end or is not mapped to the spec.
+- A future agent cannot tell whether work is current, blocked, complete, or safe to resume.
 
-This workflow addresses those problems by separating the work into reviewable stages and checking the artifacts into source control.
+LoopSpec addresses those problems by separating reviewable planning from stateful implementation and checking the relevant artifacts into source control.
 
 ## Design Principles
 
 - Product behavior comes first. `PRODUCT.md` defines what the user, caller, or consumer observes.
-- Technical planning follows approved product behavior. `TECH.md` translates the reviewed behavior into an implementation plan grounded in the current codebase.
-- Implementation starts only after both gates pass. Code changes should be scoped to the approved specs.
-- Specs stay alive. If implementation changes behavior or architecture, the specs and gate state must be updated.
-- Review state is explicit. `GATES.json` records whether PRODUCT and TECH review gates have passed.
+- Technical planning follows approved product behavior. `TECH.md` translates reviewed behavior into an implementation plan grounded in the codebase.
+- Implementation starts only after both gates pass.
+- Implementation is a loop. Each step is planned, implemented, verified, recorded, and evaluated.
+- Specs stay alive. If implementation changes behavior or architecture, specs and gate state are updated.
+- Review state is explicit. `GATES.json` records only PRODUCT and TECH review approval.
+- Loop state is separate. `LOOP_STATE.json`, `VERIFY.md`, and `REPORT.md` record implementation evidence.
 
 ## High-Level Flow
 
@@ -41,12 +50,13 @@ flowchart TD
   F -->|Approved| G["Write TECH.md"]
   G --> H["TECH Review Gate"]
   H -->|Not approved| G
-  H -->|Approved| I["Implement"]
-  I --> J["Verify against PRODUCT and TECH"]
-  J --> K{"Specs changed?"}
+  H -->|Approved| I["Loop Runner Implement"]
+  I --> J["Verify Matrix"]
+  J --> K{"Spec change needed?"}
   K -->|Product behavior changed| E
   K -->|Tech plan changed| G
-  K -->|No| L["Complete"]
+  K -->|No| L["REPORT.md"]
+  L --> M["Complete"]
 ```
 
 ## Phase 1: Intake
@@ -58,9 +68,10 @@ The workflow starts by collecting enough context to decide whether specs are use
 - target users or consuming systems
 - core scenarios and constraints
 - design sources such as Figma links, screenshots, exports, or notes
+- bug reports, logs, crash reports, or reproduction steps when relevant
 - blocking and non-blocking questions
 
-Blocking questions prevent the current phase from advancing. Non-blocking questions can proceed only when the current assumption and its impact are recorded.
+Blocking questions prevent the current phase from advancing. Non-blocking questions can proceed only when the current assumption and impact are recorded.
 
 ## Phase 2: Decide Whether Specs Are Needed
 
@@ -71,15 +82,9 @@ Specs are strongly preferred when the change has meaningful ambiguity, risk, or 
 - deep or cross-cutting stack changes
 - behavior changes where regressions would be expensive
 - agent-driven work that benefits from clearer durable inputs
-- UI work where visual states, responsive behavior, layout, or interaction fidelity materially affect acceptance
+- UI work where visual states, responsive behavior, layout, or interaction fidelity affect acceptance
 
-Specs are often unnecessary for:
-
-- small local bug fixes
-- straightforward refactors
-- narrow UI tweaks with little ambiguity
-
-If specs would not improve execution or review, the agent should skip the workflow with a brief rationale and implement directly.
+Specs are often unnecessary for small local bug fixes, straightforward refactors, and narrow UI tweaks with little ambiguity.
 
 ## Phase 3: PRODUCT.md
 
@@ -90,14 +95,12 @@ It should describe:
 - the problem and desired outcome
 - user-visible or consumer-observable behavior
 - stable numbered behavior invariants such as `B1`, `B2`, and `B3`
+- optional BDD-style examples such as `B4-E1`
 - edge cases, limits, errors, unavailable states, and non-goals
-- optional BDD-style examples such as `B4-E1` when concrete scenarios reduce ambiguity
 - visual contracts for Figma-backed UI work
 - unresolved product questions, classified as blocking or non-blocking
 
-`PRODUCT.md` should avoid implementation details such as internal types, module boundaries, CSS strategy, state layout, or algorithms.
-
-After `PRODUCT.md` is created or materially changed, both gate statuses are set to `pending`, and the workflow stops at the PRODUCT Review Gate.
+After PRODUCT is created or materially changed, both gate statuses are set to `pending`, and the workflow stops at PRODUCT Review Gate.
 
 ## Phase 4: PRODUCT Review Gate
 
@@ -106,15 +109,15 @@ The PRODUCT gate passes only when:
 - the user explicitly approves `PRODUCT.md` or asks to continue to TECH
 - no blocking product questions remain
 - non-blocking questions have recorded assumptions and impact
-- the behavior is specific enough that `TECH.md` does not need to guess product intent
+- behavior is specific enough that `TECH.md` does not need to guess product intent
 - Figma-backed visual expectations are captured when design matters
 - `product.status` is updated to `approved` in `GATES.json`
 
-If the gate does not pass, the agent revises `PRODUCT.md`, keeps the relevant status as `pending`, and returns to the PRODUCT Review Gate.
+If the gate does not pass, revise PRODUCT and return to the gate.
 
 ## Phase 5: TECH.md
 
-`TECH.md` translates approved product behavior into an implementation plan. It should be written only after `product.status` is `approved`.
+`TECH.md` translates approved product behavior into an implementation plan.
 
 It should include:
 
@@ -123,10 +126,10 @@ It should include:
 - proposed implementation plan and key tradeoffs
 - product behavior mapping from `B*` and important `B*-E*` IDs to implementation and validation
 - testing and validation plan
-- risks and mitigations when relevant
+- risks and mitigations
 - design implementation mapping for Figma-backed UI work
 
-`TECH.md` must not redefine product behavior. If technical research shows that product behavior needs to change, the workflow returns to `PRODUCT.md` and the PRODUCT gate must pass again.
+TECH must not redefine product behavior. If technical research shows that product behavior needs to change, return to PRODUCT Review Gate.
 
 ## Phase 6: TECH Review Gate
 
@@ -135,16 +138,16 @@ The TECH gate passes only when:
 - the user explicitly approves `TECH.md` or asks to continue to implementation
 - no blocking technical questions remain
 - non-blocking technical questions have recorded assumptions and impact
-- the plan is consistent with the approved `PRODUCT.md`
-- key risks, module boundaries, and validation steps are clear
-- Figma-backed implementation mapping and visual verification plans are specific enough for implementation
+- the plan is consistent with approved PRODUCT
+- risks, module boundaries, and validation steps are clear
+- Figma-backed implementation mapping and visual verification plans are clear enough for implementation
 - `tech.status` is updated to `approved` in `GATES.json`
 
-If the gate does not pass, the agent revises `TECH.md`, keeps `tech.status` as `pending`, and returns to the TECH Review Gate.
+If the gate does not pass, revise TECH and return to the gate.
 
-## Phase 7: Implementation
+## Phase 7: Loop Runner Implement
 
-Implementation can begin only when:
+Implementation begins only when:
 
 - `PRODUCT.md` exists
 - `TECH.md` exists
@@ -153,35 +156,62 @@ Implementation can begin only when:
 - `tech.status` is `approved`
 - `TECH.md` is based on the latest reviewed `PRODUCT.md`
 
-During implementation, the agent should:
+Loop Runner executes:
 
-- read the approved specs first
-- inspect the current working tree when using Git
-- search for existing files, tests, patterns, and usage points before creating new ones
-- keep changes scoped to the approved specs
-- update tests and verification artifacts as the feature lands
-- keep specs and code in the same PR when practical
+```text
+Plan -> Implement -> Verify -> Fix -> Re-verify -> Record -> Decide
+```
 
-## Phase 8: Keep Specs Current
+Each iteration:
+
+- reads only the context needed for the next step
+- chooses a small, independently verifiable change
+- implements only that change
+- runs the smallest useful verification
+- classifies the result
+- updates `LOOP_STATE.json`
+- updates `VERIFY.md`
+- continues, stops, blocks, or escalates
+
+Supported profiles are `feature`, `feature_with_figma`, `bugfix`, and `refactor`.
+
+## Phase 8: Verify Matrix
+
+`VERIFY.md` proves the implementation against the approved specs.
+
+It maps:
+
+- PRODUCT behavior IDs to evidence
+- TECH requirements to evidence
+- commands to results
+- design requirements to evidence for Figma-backed work
+- pending manual checks and residual risks
+
+The matrix is updated throughout implementation and must have no blocking pending item before successful completion.
+
+## Phase 9: Report
+
+`REPORT.md` is the final delivery report. It summarizes:
+
+- what shipped
+- current spec and gate state
+- loop profile, iteration count, and final decision
+- validation commands and artifacts
+- behavior evidence
+- known limitations, risks, and follow-ups
+
+## Keep Specs Current
 
 The specs should describe the feature that actually ships.
 
-Update `PRODUCT.md` when user-facing behavior, UX, edge cases, behavior invariants, or acceptance-relevant visual expectations change. When `PRODUCT.md` changes, set both `product.status` and `tech.status` to `pending`.
+Update `PRODUCT.md` when user-facing behavior, UX, edge cases, behavior invariants, or acceptance-relevant visual expectations change. When PRODUCT changes, set both gate statuses to `pending`.
 
-Update `TECH.md` when the implementation approach, module boundaries, sequencing, risks, dependencies, rollout assumptions, or validation strategy changes. When `TECH.md` changes without product behavior changes, set `tech.status` to `pending`.
+Update `TECH.md` when implementation approach, module boundaries, sequencing, risks, dependencies, rollout assumptions, or validation strategy change. When TECH changes without product behavior changes, set `tech.status` to `pending`.
 
 After any status reset, return to the relevant review gate before considering the work complete.
 
-## Phase 9: Verification
+## Current Scope
 
-Before completion, implementation must be verified against both current specs and the final gate state.
+LoopSpec currently includes `LOOP_STATE.json`, `VERIFY.md`, `REPORT.md`, one runner core, four profiles, result classification, stop rules, and gate escalation.
 
-Good verification maps behavior IDs to evidence:
-
-- unit tests
-- integration or end-to-end tests
-- manual workflow checks
-- screenshots, videos, browser captures, or visual comparison summaries for UI-heavy work
-- migration, compatibility, CLI output, API response, log, or telemetry checks when relevant
-
-For Figma-backed UI work, final reporting should name the design source or fallback material checked and call out known visual deviations.
+It does not include `TRACE.jsonl`, dashboards, loop replay, multi-agent coordination, cost reports, automatic CI orchestration, or complex state-machine visualization.

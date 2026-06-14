@@ -6,21 +6,21 @@ This change updates the Markdown skill instructions that drive future spec workf
 
 Relevant pre-change surfaces:
 
-- `skills/spec-driven-workflow/SKILL.md:83` — workflow intake already collects linked design material.
-- `skills/spec-driven-workflow/SKILL.md:113` — workflow asked whether a Figma mock existed, but did not require design extraction, mapping, or verification.
-- `skills/spec-driven-workflow/SKILL.md:225` — final verification allows screenshots or videos when useful for UI-heavy work.
+- `skills/spec-workflow/SKILL.md:83` — workflow intake already collects linked design material.
+- `skills/spec-workflow/SKILL.md:113` — workflow asked whether a Figma mock existed, but did not require design extraction, mapping, or verification.
+- `skills/spec-workflow/SKILL.md:225` — final verification allows screenshots or videos when useful for UI-heavy work.
 - `skills/spec-write-product/SKILL.md:63` — Figma guidance recorded the mock link and explicit absence only.
 - `skills/spec-write-product/SKILL.md:73` — `PRODUCT.md` structure had optional `Figma` but no visual contract section.
 - `skills/spec-write-tech/SKILL.md:43` — `TECH.md` structure had no Figma-backed design mapping requirement.
 - `skills/spec-write-tech/SKILL.md:53` — validation already owns screenshots and manual verification, which is the right place to add visual verification planning.
-- `skills/spec-implement/SKILL.md:86` — implementation verification currently prefers screenshots/videos only when useful.
+- `skills/spec-loop-runner/SKILL.md` — implementation verification currently prefers screenshots/videos only when useful.
 - `README.md:9` and `README.md:170` — public docs list four skills and must be updated when `spec-use-figma-design` is added.
 
 The repository has no runtime package, parser, or test harness. The implementation surface is the skill Markdown files, README, and this spec directory.
 
 ## Proposed changes
 
-Update `skills/spec-driven-workflow/SKILL.md`:
+Update `skills/spec-workflow/SKILL.md`:
 
 - In intake and PRODUCT phase guidance, treat Figma URLs as design source material that must be interpreted when provided, not only recorded.
 - For UI work with Figma, instruct agents to use `spec-use-figma-design` during PRODUCT to produce a design source and visual contract draft.
@@ -51,7 +51,7 @@ Update `skills/spec-write-tech/SKILL.md`:
 - Add TECH gate criteria for Figma-backed implementation mapping and visual verification readiness.
 - Add `spec-use-figma-design` to related skills.
 
-Update `skills/spec-implement/SKILL.md`:
+Update `skills/spec-loop-runner/SKILL.md`:
 
 - In the read-specs step, require implementers to consult the Figma design source or recorded design context for Figma-backed UI work.
 - During implementation, state that design infeasibility or user-visible design changes require spec updates and the relevant gate reset.
@@ -83,7 +83,7 @@ Do not change the `GATES.json` schema. Do not add scripts, CI checks, automated 
 - B1-B5: Covered by workflow intake updates and `spec-use-figma-design` fallback/access-limitation guidance.
 - B6-B12: Covered by `spec-write-product` design source, visual contract, behavior invariant, question classification, and PRODUCT gate updates.
 - B13-B18: Covered by `spec-write-tech` design implementation mapping, token/component reuse guidance, intentional deviation handling, visual verification planning, and TECH gate updates.
-- B19-B24: Covered by `spec-implement` design-source consultation, spec-update rules for design infeasibility, visual evidence requirements, and final report guidance.
+- B19-B24: Covered by `spec-loop-runner` design-source consultation, spec-update rules for design infeasibility, visual evidence requirements, and final report guidance.
 - B25-B32: Covered by adding `skills/spec-use-figma-design/SKILL.md` with phase-specific inputs, outputs, fallbacks, limitations, and boundaries.
 
 ## Testing and validation

@@ -11,7 +11,7 @@ Relevant current files:
 - `skills/spec-write-product/SKILL.md:118` gives general writing guidance for product specs. It can reinforce that product diagrams must be clarity-driven rather than decorative.
 - `skills/spec-write-tech/SKILL.md:43` defines the required `TECH.md` structure and optional sections.
 - `skills/spec-write-tech/SKILL.md:58` already has a `Diagram` optional section, but its wording is narrow: diagrams are allowed only when faster than prose and examples are limited to data flow, state transitions, and sequence across layers.
-- `skills/spec-driven-workflow/SKILL.md:131` describes the TECH phase at the workflow level. This should stay unchanged because the approved product spec explicitly excludes adding Mermaid diagrams to the workflow documentation itself.
+- `skills/spec-workflow/SKILL.md:131` describes the TECH phase at the workflow level. This should stay unchanged because the approved product spec explicitly excludes adding Mermaid diagrams to the workflow documentation itself.
 
 The implementation is a documentation/skill-instruction change, not runtime code. There are no parser, schema, or generation functions in this repository to update.
 
@@ -33,7 +33,7 @@ Update `skills/spec-write-tech/SKILL.md`:
 - Require concise prose around diagrams so implementation intent and validation remain reviewable without relying on a diagram alone.
 - Mention suitable Mermaid types only as guidance, not a mandatory taxonomy.
 
-Do not update `skills/spec-driven-workflow/SKILL.md` in this change. That file owns stage order and review gates; adding diagram-generation details there would conflict with the non-goal in `PRODUCT.md`.
+Do not update `skills/spec-workflow/SKILL.md` in this change. That file owns stage order and review gates; adding diagram-generation details there would conflict with the non-goal in `PRODUCT.md`.
 
 ## Product behavior mapping
 
@@ -54,7 +54,7 @@ Validation is documentation-focused:
 - Inspect `skills/spec-write-tech/SKILL.md` and verify it encourages Mermaid diagrams more actively than PRODUCT for technical flows while still making them conditional. Covers B4, B5, B6, B7, B9, B10, B11, and B12.
 - Run `rg -n "Diagram|Mermaid|mermaid|diagram" skills/spec-write-product/SKILL.md skills/spec-write-tech/SKILL.md` to confirm the expected guidance exists in both generation skills.
 - Run `git diff --check` to catch whitespace or Markdown formatting issues.
-- Do a final `git diff` review to confirm `skills/spec-driven-workflow/SKILL.md` was not changed and the implementation stayed within the approved scope.
+- Do a final `git diff` review to confirm `skills/spec-workflow/SKILL.md` was not changed and the implementation stayed within the approved scope.
 
 ## Risks and mitigations
 

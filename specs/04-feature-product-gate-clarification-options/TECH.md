@@ -6,10 +6,10 @@ The approved product behavior is in `specs/04-feature-product-gate-clarification
 
 Relevant current files:
 
-- `skills/spec-driven-workflow/SKILL.md:119` defines the top-level PRODUCT Review Gate.
-- `skills/spec-driven-workflow/SKILL.md:121` says the agent stops before technical planning, but it does not describe how to present blockers or how to ask clarification questions.
-- `skills/spec-driven-workflow/SKILL.md:123` through `skills/spec-driven-workflow/SKILL.md:127` defines the gate pass conditions.
-- `skills/spec-driven-workflow/SKILL.md:129` says failed gates stay in the product phase.
+- `skills/spec-workflow/SKILL.md:119` defines the top-level PRODUCT Review Gate.
+- `skills/spec-workflow/SKILL.md:121` says the agent stops before technical planning, but it does not describe how to present blockers or how to ask clarification questions.
+- `skills/spec-workflow/SKILL.md:123` through `skills/spec-workflow/SKILL.md:127` defines the gate pass conditions.
+- `skills/spec-workflow/SKILL.md:129` says failed gates stay in the product phase.
 - `skills/spec-write-product/SKILL.md:56` through `skills/spec-write-product/SKILL.md:61` classifies blocking and non-blocking questions before writing.
 - `skills/spec-write-product/SKILL.md:86` defines how open questions are represented in `PRODUCT.md`.
 - `skills/spec-write-product/SKILL.md:140` through `skills/spec-write-product/SKILL.md:150` defines the PRODUCT Review Gate inside the product-writing skill.
@@ -18,7 +18,7 @@ The repo implements these workflows as Markdown skill instructions, so the imple
 
 ## Proposed Changes
 
-Update `skills/spec-driven-workflow/SKILL.md` in the PRODUCT Review Gate section:
+Update `skills/spec-workflow/SKILL.md` in the PRODUCT Review Gate section:
 
 - Add gate handoff guidance after the "stop before technical planning" sentence.
 - Require the agent to say whether blocking product questions remain.
@@ -44,7 +44,7 @@ Do not change `skills/spec-write-tech/SKILL.md`. Its prerequisites already requi
 
 ## Product Behavior Mapping
 
-- B1 maps to preserving the existing stop-before-TECH rule in both `skills/spec-driven-workflow/SKILL.md` and `skills/spec-write-product/SKILL.md`.
+- B1 maps to preserving the existing stop-before-TECH rule in both `skills/spec-workflow/SKILL.md` and `skills/spec-write-product/SKILL.md`.
 - B2 maps to the new gate handoff requirement to state whether blocking product questions remain and request approval or TECH only when none remain.
 - B3 maps to limiting active clarification to product-behavior blockers and excluding broad preference or implementation questions.
 - B4 maps to showing a concise list of all blocking product questions when multiple blockers remain.
@@ -59,7 +59,7 @@ Do not change `skills/spec-write-tech/SKILL.md`. Its prerequisites already requi
 
 Validation is text-based because the change is instruction-only:
 
-- Inspect `skills/spec-driven-workflow/SKILL.md` and confirm the PRODUCT Review Gate describes the full blocker list, one-question-at-a-time clarification, 1-2 suggested options, non-blocking assumptions, and no TECH while blockers remain. Covers B1-B15 at the top-level workflow.
+- Inspect `skills/spec-workflow/SKILL.md` and confirm the PRODUCT Review Gate describes the full blocker list, one-question-at-a-time clarification, 1-2 suggested options, non-blocking assumptions, and no TECH while blockers remain. Covers B1-B15 at the top-level workflow.
 - Inspect `skills/spec-write-product/SKILL.md` and confirm the product-writing skill contains the same gate handoff behavior without changing the required `PRODUCT.md` structure. Covers B1-B15 for the actual product phase skill.
 - Inspect `skills/spec-write-tech/SKILL.md` and confirm no change is required because it already treats approved PRODUCT and no remaining blockers as prerequisites.
 - Inspect `specs/04-feature-product-gate-clarification-options/GATES.json` and confirm `product.status` is `approved` and `tech.status` remains `pending` after writing this TECH spec.

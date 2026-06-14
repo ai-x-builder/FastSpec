@@ -4,18 +4,18 @@
 
 The product spec in `specs/01-feature-spec-driven-workflow-optimization/PRODUCT.md` requires a stricter staged workflow: product first, technical planning second, and implementation only after both review gates pass.
 
-This repository contains four spec workflow skills under `skills/`:
+This repository contains core spec workflow skills under `skills/`:
 
-- `skills/spec-driven-workflow/SKILL.md:12` is the umbrella workflow and owns the decision to skip small work or enter the gated flow.
+- `skills/spec-workflow/SKILL.md:12` is the umbrella workflow and owns the decision to skip small work or enter the gated flow.
 - `skills/spec-write-product/SKILL.md:23` owns the product-only phase and PRODUCT Review Gate.
 - `skills/spec-write-tech/SKILL.md:25` owns reviewed-product prerequisites, codebase research, product behavior mapping, and TECH Review Gate.
-- `skills/spec-implement/SKILL.md:25` owns implementation prerequisites and spec synchronization during implementation.
+- `skills/spec-loop-runner/SKILL.md` owns implementation prerequisites and spec synchronization during implementation.
 
 The contract is: skipping workflow is still allowed for small work, but once the workflow is chosen, `PRODUCT.md` and `TECH.md` are mandatory staged artifacts with review gates between phases.
 
 ## Proposed Changes
 
-Update `skills/spec-driven-workflow/SKILL.md` to become the orchestration source of truth:
+Update `skills/spec-workflow/SKILL.md` to become the orchestration source of truth:
 
 - Keep the pragmatic spec necessity decision.
 - Replace optional `TECH.md` language with: once spec-driven workflow is chosen, `PRODUCT.md` and `TECH.md` are both required.
@@ -39,7 +39,7 @@ Update `skills/spec-write-tech/SKILL.md`:
 - Require technical infeasibility or product-behavior changes to return to PRODUCT rather than redefining behavior in TECH.
 - Require the agent to stop at the TECH Review Gate after writing or materially changing `TECH.md`.
 
-Update `skills/spec-implement/SKILL.md`:
+Update `skills/spec-loop-runner/SKILL.md`:
 
 - Require both approved `PRODUCT.md` and approved `TECH.md`.
 - Remove product-only implementation language.
@@ -48,10 +48,10 @@ Update `skills/spec-implement/SKILL.md`:
 
 ## Product Behavior Mapping
 
-- B1-B4: Covered by the new `spec-driven-workflow` intake and spec necessity stages.
+- B1-B4: Covered by the new `spec-workflow` intake and spec necessity stages.
 - B5-B8: Covered by `spec-write-product` product-only output, open question classification, stable behavior IDs, and PRODUCT Review Gate.
 - B9-B13: Covered by `spec-write-tech` reviewed-product prerequisite, code research, behavior mapping, stale TECH handling, and TECH Review Gate.
-- B14-B16: Covered by `spec-implement` prerequisites, spec synchronization rules, and final verification expectations.
+- B14-B16: Covered by `spec-loop-runner` prerequisites, spec synchronization rules, and final verification expectations.
 
 ## Testing and Validation
 

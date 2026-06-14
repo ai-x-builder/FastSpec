@@ -6,10 +6,10 @@ The approved product behavior is in `specs/05-feature-tech-gate-clarification-qu
 
 Relevant current files:
 
-- `skills/spec-driven-workflow/SKILL.md:160` defines the top-level TECH Review Gate.
-- `skills/spec-driven-workflow/SKILL.md:162` says the agent stops before implementation, but it does not describe how to present technical blockers or assumptions.
-- `skills/spec-driven-workflow/SKILL.md:164` through `skills/spec-driven-workflow/SKILL.md:168` defines TECH gate pass conditions.
-- `skills/spec-driven-workflow/SKILL.md:170` handles failed TECH gates and product-affecting revisions.
+- `skills/spec-workflow/SKILL.md:160` defines the top-level TECH Review Gate.
+- `skills/spec-workflow/SKILL.md:162` says the agent stops before implementation, but it does not describe how to present technical blockers or assumptions.
+- `skills/spec-workflow/SKILL.md:164` through `skills/spec-workflow/SKILL.md:168` defines TECH gate pass conditions.
+- `skills/spec-workflow/SKILL.md:170` handles failed TECH gates and product-affecting revisions.
 - `skills/spec-write-tech/SKILL.md:97` defines the TECH Review Gate inside the TECH-writing skill.
 - `skills/spec-write-tech/SKILL.md:99` says the agent stops before implementation, but it does not define a gate handoff shape.
 - `skills/spec-write-tech/SKILL.md:101` through `skills/spec-write-tech/SKILL.md:105` defines TECH gate pass conditions.
@@ -19,7 +19,7 @@ The repo implements workflow behavior through skill text, so this implementation
 
 ## Proposed Changes
 
-Update `skills/spec-driven-workflow/SKILL.md` in the TECH Review Gate section:
+Update `skills/spec-workflow/SKILL.md` in the TECH Review Gate section:
 
 - Add a concise TECH Review Gate handoff before the existing pass criteria.
 - Require the agent to state whether blocking technical questions remain.
@@ -43,7 +43,7 @@ Update `skills/spec-write-tech/SKILL.md` in the TECH Review Gate section with th
 - Clarify that product behavior changes cannot be resolved only in TECH and must return to PRODUCT.
 - Keep `TECH.md` as the place where non-blocking technical assumptions and impact are recorded.
 
-Do not change `skills/spec-implement/SKILL.md`. It already requires both gate statuses to be approved before implementation starts; the handoff behavior belongs to the TECH gate, not the implementation skill.
+Do not change the Loop Runner implementation model. `skills/spec-loop-runner/SKILL.md` already requires both gate statuses to be approved before implementation starts; the handoff behavior belongs to the TECH gate, not the implementation skill.
 
 ## Product Behavior Mapping
 
@@ -63,9 +63,9 @@ Do not change `skills/spec-implement/SKILL.md`. It already requires both gate st
 
 Validation is text-based because the change is instruction-only:
 
-- Inspect `skills/spec-driven-workflow/SKILL.md` and confirm the TECH Review Gate describes blocker presence, no-blocker approval prompt, full blocker list, one-question-at-a-time clarification, one or two suggested options, non-blocking assumptions, no implementation while blockers remain, and product-affecting return to PRODUCT. Covers B1-B17 at the top-level workflow.
+- Inspect `skills/spec-workflow/SKILL.md` and confirm the TECH Review Gate describes blocker presence, no-blocker approval prompt, full blocker list, one-question-at-a-time clarification, one or two suggested options, non-blocking assumptions, no implementation while blockers remain, and product-affecting return to PRODUCT. Covers B1-B17 at the top-level workflow.
 - Inspect `skills/spec-write-tech/SKILL.md` and confirm the TECH-writing skill contains the same gate handoff behavior, including the definition of blocking technical questions and the product-behavior boundary. Covers B1-B17 for the actual TECH phase skill.
-- Inspect `skills/spec-implement/SKILL.md` and confirm no change is required because it already requires approved PRODUCT and TECH gate states before implementation.
+- Inspect `skills/spec-loop-runner/SKILL.md` and confirm no change is required because it already requires approved PRODUCT and TECH gate states before implementation.
 - Inspect `specs/05-feature-tech-gate-clarification-questions/GATES.json` and confirm `product.status` is `approved` and `tech.status` remains `pending` after writing this TECH spec.
 - Run `git diff --check` to catch trailing whitespace or patch formatting issues.
 

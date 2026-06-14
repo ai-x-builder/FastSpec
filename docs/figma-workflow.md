@@ -1,8 +1,8 @@
 # Figma Workflow
 
-Spec-Driven Development supports Figma-backed UI work by turning design context into reviewable spec material, implementation mapping, and verification evidence.
+LoopSpec supports Figma-backed UI work by turning design context into reviewable spec material, implementation mapping, visual verification, and final reporting.
 
-Figma support is handled by [`spec-use-figma-design`](../skills/spec-use-figma-design/SKILL.md). The skill is used alongside the main workflow; it does not replace `PRODUCT.md`, `TECH.md`, `GATES.json`, or review gates.
+Figma support is handled by [`spec-use-figma-design`](../skills/spec-use-figma-design/SKILL.md). The skill is used alongside the main workflow; it does not replace `PRODUCT.md`, `TECH.md`, `GATES.json`, Loop Runner, or review gates.
 
 ## Why Figma Needs Spec Treatment
 
@@ -10,7 +10,7 @@ For UI work, design intent is often more precise than a written request. It may 
 
 At the same time, a Figma link alone is not enough. Future agents may not have access to the file, may inspect a different frame, or may miss which visual details are acceptance-critical.
 
-This workflow records the useful design context in source-controlled specs so that design intent remains reviewable and durable.
+LoopSpec records useful design context in source-controlled specs and verification artifacts so design intent remains reviewable and durable.
 
 ## Inputs
 
@@ -23,7 +23,7 @@ Useful inputs include:
 - target pages, components, flows, states, and viewports
 - existing design-system context
 - screenshots, exports, recordings, or design notes when direct Figma access is unavailable
-- current workflow phase: PRODUCT, TECH, or IMPLEMENT
+- current workflow phase: PRODUCT, TECH, or Loop Runner implementation
 
 If direct Figma access is unavailable, fallback material can be used. The limitation must be recorded explicitly.
 
@@ -39,19 +39,6 @@ The output should be incorporated into `PRODUCT.md` as:
 - blocking design questions when implementation would otherwise have to guess acceptance-critical behavior
 - non-blocking design assumptions with impact
 - access limitations when the design was not inspected directly
-
-The PRODUCT phase should capture visual intent without prescribing implementation details.
-
-Good PRODUCT-level Figma details include:
-
-- layout structure
-- content hierarchy
-- visible copy and labels
-- default, hover, focus, active, selected, disabled, empty, loading, error, and success states when present
-- responsive expectations
-- overflow behavior
-- visible accessibility and focus expectations
-- acceptance-relevant imagery, icons, color, typography, radius, border, shadow, elevation, or motion
 
 Implementation-specific details such as component names, CSS strategy, state shape, framework APIs, or asset pipeline choices belong in `TECH.md`.
 
@@ -73,11 +60,9 @@ That mapping should cover:
 - whether a deviation requires PRODUCT re-approval
 - visual verification plan for key screens, states, and viewports
 
-TECH may discuss components, tokens, CSS, state management, assets, and framework-specific choices because these are implementation details.
+## Loop Runner Implementation
 
-## IMPLEMENT Phase
-
-During implementation, Figma context is used to verify that the approved visual contract and implementation mapping were followed.
+During Loop Runner implementation, Figma context is used to verify that the approved visual contract and implementation mapping were followed.
 
 The implementer should consult:
 
@@ -86,6 +71,8 @@ The implementer should consult:
 - `GATES.json`
 - Figma source or recorded fallback design material
 - visual verification checklist from `spec-use-figma-design` when useful
+
+For `feature_with_figma`, `VERIFY.md` should include `Design Verification` entries for acceptance-relevant visual expectations.
 
 Verification can include:
 
@@ -96,7 +83,7 @@ Verification can include:
 - state-by-state walkthroughs
 - viewport-specific checks
 
-Final implementation reporting should name the Figma source or fallback material checked and call out known visual deviations.
+`REPORT.md` should name the Figma source or fallback material checked and call out known visual deviations.
 
 ## Fallback Behavior
 
@@ -122,18 +109,19 @@ The Figma workflow does not:
 - replace human review
 - let implementation redefine product behavior without returning to PRODUCT Review Gate
 
-Pixel precision can be required when the product spec says so, but the default is to capture and verify user-visible intent and acceptance-relevant constraints.
+Pixel precision can be required when PRODUCT says so, but the default is to capture and verify user-visible intent and acceptance-relevant constraints.
 
 ## Example Flow
 
 ```mermaid
 sequenceDiagram
   participant User
-  participant Workflow as spec-driven-workflow
+  participant Workflow as spec-workflow
   participant Figma as spec-use-figma-design
   participant Product as PRODUCT.md
   participant Tech as TECH.md
-  participant Impl as Implementation
+  participant Runner as spec-loop-runner
+  participant Verify as VERIFY.md
 
   User->>Workflow: Request UI feature with Figma link
   Workflow->>Figma: Extract PRODUCT phase design context
@@ -142,7 +130,8 @@ sequenceDiagram
   Workflow->>Figma: Extract TECH phase implementation mapping
   Figma->>Tech: Design mapping and verification plan
   User->>Workflow: Approve TECH
-  Workflow->>Impl: Implement approved specs
-  Impl->>Figma: Refresh visual verification checklist
-  Impl->>User: Report checks and known deviations
+  Workflow->>Runner: Start feature_with_figma loop
+  Runner->>Figma: Refresh visual verification checklist
+  Runner->>Verify: Record design verification
+  Runner->>User: Report checks and known deviations
 ```

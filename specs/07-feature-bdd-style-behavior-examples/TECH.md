@@ -8,11 +8,11 @@ This repository has no runtime package, parser, or test harness. The implementat
 
 - `README.md:26` through `README.md:30` defines the public project positioning around reviewed `PRODUCT.md`, derived `TECH.md`, and `GATES.json`.
 - `README.md:67` through `README.md:71` lists the core feature bullets, including behavior-first product specs.
-- `skills/spec-driven-workflow/SKILL.md:104` through `skills/spec-driven-workflow/SKILL.md:121` describes the PRODUCT phase inputs and output boundary.
+- `skills/spec-workflow/SKILL.md:104` through `skills/spec-workflow/SKILL.md:121` describes the PRODUCT phase inputs and output boundary.
 - `skills/spec-write-product/SKILL.md:80` through `skills/spec-write-product/SKILL.md:100` defines `## Behavior` as the core product-spec section and stable numbered invariants as the reference format.
 - `skills/spec-write-product/SKILL.md:110` through `skills/spec-write-product/SKILL.md:129` lists the behavior coverage expectations that examples can clarify.
 - `skills/spec-write-tech/SKILL.md:49` through `skills/spec-write-tech/SKILL.md:55` defines TECH sections, including product behavior mapping and testing/validation.
-- `skills/spec-implement/SKILL.md:40` through `skills/spec-implement/SKILL.md:47` tells implementers to treat `PRODUCT.md` as the behavior source of truth and `TECH.md` as the architecture/validation source.
+- `skills/spec-loop-runner/SKILL.md` tells implementers to treat `PRODUCT.md` as the behavior source of truth and `TECH.md` as the architecture/validation source.
 - `skills/spec-write-product/references/behavior-example.md:1` through `skills/spec-write-product/references/behavior-example.md:50` is the concrete model for future Behavior sections.
 
 The main design constraint is to add a convention for examples without changing the staged workflow, `GATES.json`, or the fact that validation strategy belongs in `TECH.md`.
@@ -25,7 +25,7 @@ Update `README.md`:
 - Extend the behavior-first feature bullet so readers understand that `B*` invariants remain the contract and `B*-E*` examples are optional clarifiers.
 - Add a short usage/documentation note showing the intended shape at a high level, without making README a full spec-writing manual.
 
-Update `skills/spec-driven-workflow/SKILL.md`:
+Update `skills/spec-workflow/SKILL.md`:
 
 - In the PRODUCT phase description, state that product behavior may include optional BDD-style examples under important numbered invariants when examples reduce ambiguity.
 - In verification guidance, allow verification to map back to both behavior invariants and any important examples.
@@ -60,7 +60,7 @@ Update `skills/spec-write-tech/SKILL.md`:
 - Expand Testing and validation so examples can map to unit tests, integration tests, end-to-end tests, manual checks, screenshots, or other verification evidence depending on risk.
 - Preserve the rule that `PRODUCT.md` owns behavior and `TECH.md` owns validation planning.
 
-Update `skills/spec-implement/SKILL.md`:
+Update `skills/spec-loop-runner/SKILL.md`:
 
 - In implementation and verification guidance, refer to approved behavior invariants and any important examples so implementers do not ignore `B*-E*` examples after TECH approval.
 - Preserve all gate prerequisites and `GATES.json` rules.
@@ -90,7 +90,7 @@ Do not change:
 
 - Run `jq . specs/07-feature-bdd-style-behavior-examples/GATES.json` to confirm gate state JSON remains valid.
 - Run `rg -n "BDD-style|B<behavior-number>-E<example-number>|Examples for B|Given / When / Then|Feature:|Scenario:|B\\*-E\\*" README.md skills specs/07-feature-bdd-style-behavior-examples` to confirm the new guidance appears in the expected surfaces.
-- Run `rg -n "Product behavior mapping|Testing and validation|examples" skills/spec-write-tech/SKILL.md skills/spec-implement/SKILL.md` to verify TECH and implementation guidance reference examples where needed.
+- Run `rg -n "Product behavior mapping|Testing and validation|examples" skills/spec-write-tech/SKILL.md skills/spec-loop-runner/SKILL.md` to verify TECH and implementation guidance reference examples where needed.
 - Inspect `skills/spec-write-product/SKILL.md` manually to confirm examples complement the Behavior section and do not replace stable numbered invariants.
 - Inspect `skills/spec-write-product/references/behavior-example.md` manually to confirm examples are present but not required for every behavior item.
 - Run `git diff --check` to catch whitespace errors.
