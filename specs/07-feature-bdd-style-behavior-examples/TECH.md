@@ -2,7 +2,7 @@
 
 ## Context
 
-The approved product behavior is in `specs/bdd-style-behavior-examples/PRODUCT.md`. It keeps the project as behavior-first SDD while adding optional BDD-style examples under important Behavior invariants.
+The approved product behavior is in `specs/07-feature-bdd-style-behavior-examples/PRODUCT.md`. It keeps the project as behavior-first SDD while adding optional BDD-style examples under important Behavior invariants.
 
 This repository has no runtime package, parser, or test harness. The implementation surface is Markdown documentation and skill instructions:
 
@@ -88,8 +88,8 @@ Do not change:
 
 ## Testing and validation
 
-- Run `jq . specs/bdd-style-behavior-examples/GATES.json` to confirm gate state JSON remains valid.
-- Run `rg -n "BDD-style|B<behavior-number>-E<example-number>|Examples for B|Given / When / Then|Feature:|Scenario:|B\\*-E\\*" README.md skills specs/bdd-style-behavior-examples` to confirm the new guidance appears in the expected surfaces.
+- Run `jq . specs/07-feature-bdd-style-behavior-examples/GATES.json` to confirm gate state JSON remains valid.
+- Run `rg -n "BDD-style|B<behavior-number>-E<example-number>|Examples for B|Given / When / Then|Feature:|Scenario:|B\\*-E\\*" README.md skills specs/07-feature-bdd-style-behavior-examples` to confirm the new guidance appears in the expected surfaces.
 - Run `rg -n "Product behavior mapping|Testing and validation|examples" skills/spec-write-tech/SKILL.md skills/spec-implement/SKILL.md` to verify TECH and implementation guidance reference examples where needed.
 - Inspect `skills/spec-write-product/SKILL.md` manually to confirm examples complement the Behavior section and do not replace stable numbered invariants.
 - Inspect `skills/spec-write-product/references/behavior-example.md` manually to confirm examples are present but not required for every behavior item.

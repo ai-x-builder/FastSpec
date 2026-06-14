@@ -2,7 +2,7 @@
 
 ## Context
 
-This feature changes the skill instructions that generate future `PRODUCT.md` and `TECH.md` files. The approved product behavior is in `specs/conditional-mermaid-guidance/PRODUCT.md`; this tech spec does not redefine it.
+This feature changes the skill instructions that generate future `PRODUCT.md` and `TECH.md` files. The approved product behavior is in `specs/03-feature-conditional-mermaid-guidance/PRODUCT.md`; this tech spec does not redefine it.
 
 Relevant current files:
 

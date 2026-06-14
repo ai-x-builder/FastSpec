@@ -2,7 +2,7 @@
 
 ## Context
 
-The product spec in `specs/spec-driven-workflow-optimization/PRODUCT.md` requires a stricter staged workflow: product first, technical planning second, and implementation only after both review gates pass.
+The product spec in `specs/01-feature-spec-driven-workflow-optimization/PRODUCT.md` requires a stricter staged workflow: product first, technical planning second, and implementation only after both review gates pass.
 
 This repository contains four spec workflow skills under `skills/`:
 
@@ -60,8 +60,8 @@ Update `skills/spec-implement/SKILL.md`:
 - Verify the intended staged terms are present:
   - `rg "PRODUCT Review Gate|TECH Review Gate|blocking open question|stale" skills`
 - Verify the split spec exists:
-  - `test -f specs/spec-driven-workflow-optimization/PRODUCT.md`
-  - `test -f specs/spec-driven-workflow-optimization/TECH.md`
+  - `test -f specs/01-feature-spec-driven-workflow-optimization/PRODUCT.md`
+  - `test -f specs/01-feature-spec-driven-workflow-optimization/TECH.md`
 - Inspect `git diff --check` to catch whitespace errors.
 
 ## Risks and Mitigations

@@ -2,7 +2,7 @@
 
 ## Context
 
-This change updates the Markdown skill instructions that drive future spec workflow behavior. The approved product behavior is in `specs/figma-design-contract/PRODUCT.md`; this tech spec maps that behavior to concrete documentation and skill changes.
+This change updates the Markdown skill instructions that drive future spec workflow behavior. The approved product behavior is in `specs/06-feature-figma-design-contract/PRODUCT.md`; this tech spec maps that behavior to concrete documentation and skill changes.
 
 Relevant pre-change surfaces:
 
@@ -90,9 +90,9 @@ Do not change the `GATES.json` schema. Do not add scripts, CI checks, automated 
 
 Validate this documentation-only implementation with repository checks and targeted review:
 
-- Run `jq . specs/figma-design-contract/GATES.json` to verify gate state JSON.
+- Run `jq . specs/06-feature-figma-design-contract/GATES.json` to verify gate state JSON.
 - Run `find skills specs -name '*.md' -print` to confirm the new skill and spec files are discoverable.
-- Run `rg -n "spec-use-figma-design|Design source|Visual contract|Design implementation mapping|visual verification|Figma-backed|Figma" skills README.md specs/figma-design-contract` to confirm the intended guidance appears in the expected surfaces.
+- Run `rg -n "spec-use-figma-design|Design source|Visual contract|Design implementation mapping|visual verification|Figma-backed|Figma" skills README.md specs/06-feature-figma-design-contract` to confirm the intended guidance appears in the expected surfaces.
 - Run `git diff --check` to catch Markdown whitespace issues.
 - Manually inspect the five skill files to verify they preserve staged gates and do not add Figma-specific fields to `GATES.json`.
 - Manually inspect README to verify skill count, links, architecture diagram, module table, and project structure stay consistent.
