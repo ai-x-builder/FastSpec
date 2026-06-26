@@ -1,0 +1,21 @@
+{
+  "name": "fastspec",
+  "version": "0.1.0",
+  "description": "Fast, repo-native specs for agent engineering.",
+  "author": {
+    "name": "ai-x-builder",
+    "url": "https://github.com/ai-x-builder"
+  },
+  "license": "MIT",
+  "keywords": [
+    "specs",
+    "fastspec",
+    "spec-workflow",
+    "spec-driven"
+  ],
+  "skills": {
+    "paths": [
+      "./skills/"
+    ]
+  }
+}
