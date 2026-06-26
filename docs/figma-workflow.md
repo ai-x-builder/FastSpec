@@ -1,6 +1,6 @@
 # Figma Workflow
 
-LoopSpec supports Figma-backed UI work by turning design context into reviewable spec material, implementation mapping, visual verification, and final reporting.
+FastSpec supports Figma-backed UI work by turning design context into reviewable spec material, implementation mapping, visual verification, and final reporting.
 
 Figma support is handled by [`spec-use-figma-design`](../skills/spec-use-figma-design/SKILL.md). The skill is used alongside the main workflow; it does not replace `PRODUCT.md`, `TECH.md`, `GATES.json`, Loop Runner, or review gates.
 
@@ -10,7 +10,7 @@ For UI work, design intent is often more precise than a written request. It may 
 
 At the same time, a Figma link alone is not enough. Future agents may not have access to the file, may inspect a different frame, or may miss which visual details are acceptance-critical.
 
-LoopSpec records useful design context in source-controlled specs and verification artifacts so design intent remains reviewable and durable.
+FastSpec records useful design context in source-controlled specs and verification artifacts so design intent remains reviewable and durable.
 
 ## Inputs
 

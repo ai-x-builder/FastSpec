@@ -2,7 +2,7 @@
 
 `GATES.json` is the persisted review-state file for each spec directory. It tells future agents and reviewers whether the PRODUCT and TECH review gates have passed.
 
-For every LoopSpec feature, the file lives at:
+For every FastSpec feature, the file lives at:
 
 ```text
 specs/<id>/GATES.json
@@ -51,11 +51,14 @@ Do not add:
 - multiple product or tech artifacts
 - loop phase
 - iteration number
+- role assignments
+- trace events
+- reviewer decisions
 - verification results
 - blockers or risks
 - custom workflow states
 
-Loop implementation state belongs in `LOOP_STATE.json`. Verification evidence belongs in `VERIFY.md`. Delivery summary belongs in `REPORT.md`.
+Loop implementation state belongs in `LOOP_STATE.json`. Role assignments belong in `AGENT_ASSIGNMENTS.json`. Trace events belong in `TRACE.jsonl`. Verification evidence belongs in `VERIFY.md`. Reviewer findings belong in `REVIEW.md`. Delivery summary belongs in `REPORT.md`.
 
 ## Why This File Exists
 
@@ -66,7 +69,7 @@ Chat history is not enough because:
 - it may not be available to a future agent
 - it can be ambiguous
 - it can be separated from the pull request
-- it does not give scripts or reviewers a stable state to inspect
+- it does not give tools or reviewers a stable state to inspect
 - it can drift from checked-in specs
 
 `GATES.json` makes review state explicit, local to the spec, and version-controlled.
@@ -211,19 +214,3 @@ Before Loop Runner implementation, confirm:
 - `TECH.md` reflects the latest approved `PRODUCT.md`
 
 If any check fails, return to the relevant spec phase instead of continuing.
-
-## Linting
-
-The repository includes a dependency-free lint script:
-
-```bash
-node scripts/lint-specs.mjs
-```
-
-The script validates spec directories and the supported gate shape. Loop artifacts are optional by default for compatibility with historical specs, but are validated when present.
-
-To require loop artifacts for one completed implementation:
-
-```bash
-node scripts/lint-specs.mjs --spec specs/<id> --require-loop-artifacts
-```

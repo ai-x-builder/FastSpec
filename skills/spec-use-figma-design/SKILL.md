@@ -11,7 +11,7 @@ Turn Figma-backed UI design context into phase-appropriate spec workflow materia
 
 Use this skill when a spec-driven feature has UI, interaction, layout, or visual design implications and the user provides a Figma URL or fallback design material. The goal is to make the design usable by future agents without relying on conversation memory.
 
-This skill supports the staged LoopSpec workflow. It does not replace `PRODUCT.md`, `TECH.md`, `GATES.json`, Loop Runner, or human review gates. It must not approve gates, skip required specs, create alternate gate state, or require pixel-perfect validation by default.
+This skill supports the staged FastSpec workflow. It does not replace `PRODUCT.md`, `TECH.md`, `GATES.json`, Loop Runner, or human review gates. It must not approve gates, skip required specs, create alternate gate state, or require pixel-perfect validation by default.
 
 ## Inputs
 

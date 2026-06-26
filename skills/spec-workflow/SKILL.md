@@ -1,19 +1,21 @@
 ---
 name: spec-workflow
-description: "Drive the LoopSpec workflow for substantial agent-driven work: PRODUCT.md, PRODUCT gate, TECH.md, TECH gate, Loop Runner Implement, verification matrix, and report. Use when starting significant work, planning agent implementation, or keeping specs and loop evidence in source control."
+description: "Drive the FastSpec workflow for substantial agent-driven work: PRODUCT.md, PRODUCT gate, TECH.md, TECH gate, Loop Runner Implement, verification matrix, and report. Use when starting significant work, planning agent implementation, or keeping specs and loop evidence in source control."
 ---
 
 # spec-workflow
 
-Drive the LoopSpec workflow for substantial features, bug fixes, refactors, UI work, APIs, CLIs, libraries, or data models.
+Drive the FastSpec workflow for substantial features, bug fixes, refactors, UI work, APIs, CLIs, libraries, or data models.
 
-LoopSpec is:
+FastSpec is:
 
 ```text
-PRODUCT -> Gate -> TECH -> Gate -> Loop Runner Implement -> Verify Matrix -> Report
+PRODUCT -> Gate -> TECH -> Gate -> Loop Runner Implement -> Verify Matrix -> Review -> Report
 ```
 
-Small local changes can still skip the workflow. Once work enters LoopSpec, the specs, gate state, and implementation evidence are source-controlled so future agents and reviewers can understand what was approved, what was built, how it was verified, and whether the loop finished cleanly.
+FastSpec is fast by design. It should preserve product intent, technical intent, verification evidence, and resumability with the smallest useful amount of durable process. Small local changes can still skip the workflow. Once work enters FastSpec, the specs, gate state, and implementation evidence are source-controlled so future agents and reviewers can understand what was approved, what was built, how it was verified, and whether the loop finished cleanly.
+
+Compared with heavier agent workflow systems such as superpowers, keep the core path narrow: no platform scheduler, dashboard, replay engine, broad approval metadata, database state, or generated workflow bureaucracy unless a future approved spec explicitly adds it.
 
 ## Required Artifacts
 
@@ -25,8 +27,11 @@ Every spec-driven task requires:
 
 After implementation starts, Loop Runner also writes:
 
+- `specs/<id>/AGENT_ASSIGNMENTS.json`
 - `specs/<id>/LOOP_STATE.json`
+- `specs/<id>/TRACE.jsonl`
 - `specs/<id>/VERIFY.md`
+- `specs/<id>/REVIEW.md`
 - `specs/<id>/REPORT.md`
 
 `GATES.json` remains the only review-gate state file. Loop artifacts do not approve gates.
@@ -62,7 +67,7 @@ Only create a new ticket or issue when the user explicitly asks for one.
 
 `product.status` and `tech.status` may only be `pending` or `approved`.
 
-Do not add content hashes, revision ids, approval timestamps, approver fields, comments, loop state, or custom workflow states to `GATES.json`. Loop implementation state belongs in `LOOP_STATE.json`.
+Do not add content hashes, revision ids, approval timestamps, approver fields, comments, loop state, role assignments, trace events, reviewer decisions, or custom workflow states to `GATES.json`. Loop implementation evidence belongs in Loop Runner artifacts such as `LOOP_STATE.json`, `AGENT_ASSIGNMENTS.json`, `TRACE.jsonl`, `VERIFY.md`, `REVIEW.md`, and `REPORT.md`.
 
 Gate updates:
 
@@ -77,7 +82,7 @@ Gate updates:
 
 ## When Specs Are Required
 
-Strongly prefer LoopSpec for:
+Strongly prefer FastSpec for:
 
 - product or architectural ambiguity
 - expected implementation size around 1k+ LOC
@@ -93,6 +98,8 @@ Specs are often unnecessary for:
 - narrow UI tweaks with little ambiguity
 
 If specs will not improve execution or review, skip the workflow with a brief rationale and implement directly.
+
+When FastSpec is used, keep it fast: ask only blocking questions, write the smallest useful spec, stop at clear gates, run small Loop Runner iterations, and record evidence directly in the repository artifacts.
 
 ## Phase 1: Intake
 
@@ -180,20 +187,24 @@ Before editing, Loop Runner confirms:
 - the working tree is understood when Git is used
 - required context, code, tests, configs, and design or bug material have been read
 
-Loop Runner executes repeated iterations:
+Loop Runner executes repeated Coordinator-led role iterations:
 
 ```text
-Plan -> Implement -> Verify -> Fix -> Re-verify -> Record -> Decide
+Coordinator -> Planner -> Implementer -> Verifier -> Reviewer -> Coordinator decision
 ```
 
 Each iteration:
 
-- chooses the smallest meaningful implementation step
-- changes only that scope
-- runs the smallest useful verification
+- has Planner choose the smallest meaningful implementation step
+- has Implementer change only that scope
+- has Verifier run the smallest useful verification
+- has Reviewer independently check scope, spec compliance, code quality, and risk
 - classifies the result
+- updates `AGENT_ASSIGNMENTS.json` when role ownership changes
 - updates `LOOP_STATE.json`
+- appends `TRACE.jsonl`
 - updates `VERIFY.md`
+- updates `REVIEW.md`
 - decides whether to continue, stop, block, or return to a gate
 
 Supported profiles:
@@ -217,6 +228,14 @@ The matrix is updated during implementation, not only at the end.
 
 ## Phase 8: Report
 
+`REVIEW.md` records independent review before successful completion. It summarizes:
+
+- scope control
+- spec compliance
+- code quality
+- delivery risks
+- reviewer decision
+
 `REPORT.md` is generated before successful completion. It summarizes:
 
 - what shipped
@@ -226,7 +245,7 @@ The matrix is updated during implementation, not only at the end.
 - behavior evidence
 - remaining risks and follow-ups
 
-Successful completion requires both gates approved, no blocking pending verification item, no loop blocker, and a generated report.
+Successful completion requires both gates approved, no blocking pending verification item, no loop blocker, `TRACE.jsonl` evidence, a non-blocking `REVIEW.md` reviewer decision, and a generated report.
 
 ## Keep Specs Current During Implementation
 
@@ -240,12 +259,13 @@ Do not complete implementation while affected gate state is pending.
 
 ## Best Practices
 
+- Keep FastSpec fast; prefer the shortest durable path over extra process.
 - Be pragmatic; skip the workflow when specs add no value.
-- Once work enters LoopSpec, enforce both gates.
+- Once work enters FastSpec, enforce both gates.
 - Keep PRODUCT behavior-oriented and implementation-light.
 - Keep TECH grounded in current codebase research.
 - Keep implementation scoped to approved specs.
-- Record loop state and verification evidence so future agents can resume or audit the work.
+- Record assignments, loop state, trace events, verification evidence, and review evidence so future agents can resume or audit the work.
 - Use review time to validate behavior and plan quality, not style nits.
 
 ## Related Skills

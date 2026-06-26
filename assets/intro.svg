@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">FastSpec workflow overview</title>
+  <desc id="desc">A fast spec-gated agent workflow from intake through product and technical gates to verified loop runner evidence.</desc>
+  <defs>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#d8e4f4" stroke-width="1"/>
+    </pattern>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="13" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 1 L 13 7 L 0 13 z" fill="#c8d4e3"/>
+    </marker>
+    <style>
+      .bg { fill: #f8fbff; }
+      .panel { fill: #ffffff; stroke: #d4dfed; stroke-width: 1.2; }
+      .ink { fill: #0f172a; }
+      .muted { fill: #54657f; }
+      .blue { fill: #2563eb; }
+      .teal { fill: #0f7c8c; }
+      .orange { fill: #f97316; }
+      .green { fill: #16a34a; }
+      .purple { fill: #7c3aed; }
+      .mono { font-family: "SFMono-Regular", "Menlo", "Consolas", monospace; }
+      text { font-family: "Inter", "Arial", "Helvetica", sans-serif; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1920" height="1080"/>
+  <rect width="1920" height="1080" fill="url(#grid)" opacity="0.75"/>
+  <rect x="34" y="34" width="1852" height="1012" fill="none" stroke="#c9d8eb" stroke-width="1.2"/>
+
+  <g transform="translate(112 88)">
+    <rect x="0" y="0" width="13" height="35" rx="7" class="blue"/>
+    <rect x="19" y="0" width="13" height="35" rx="7" class="orange"/>
+    <rect x="38" y="0" width="13" height="35" rx="7" class="green"/>
+    <rect x="57" y="0" width="13" height="35" rx="7" fill="#1f2937"/>
+    <text x="88" y="27" font-size="30" font-weight="800" class="ink">FastSpec</text>
+    <text x="88" y="55" font-size="20" class="muted">Fast, repo-native specs for agent engineering</text>
+  </g>
+
+  <text x="112" y="210" font-size="25" font-weight="800" class="blue">FASTSPEC WORKFLOW</text>
+  <text x="112" y="289" font-size="66" font-weight="900" letter-spacing="0" class="ink">Fast specs, clear gates,</text>
+  <text x="112" y="369" font-size="66" font-weight="900" letter-spacing="0" class="ink">verified implementation loops.</text>
+  <text x="112" y="427" font-size="25" class="muted">Agents turn intent into approved specs, ship through small verified steps,</text>
+  <text x="112" y="458" font-size="25" class="muted">and keep evidence in plain repo files.</text>
+
+  <g transform="translate(112 485)">
+    <rect x="0" y="0" width="612" height="44" rx="22" fill="#eaf2ff" stroke="#9cc2ff"/>
+    <text x="20" y="29" font-size="20" font-weight="800" class="blue">Built to feel faster than heavy agent workflow platforms</text>
+  </g>
+
+  <g transform="translate(112 548)">
+    <g>
+      <rect class="panel" x="0" y="0" width="264" height="242" rx="7" filter="url(#softShadow)"/>
+      <rect x="0" y="0" width="264" height="6" rx="3" class="blue"/>
+      <rect x="25" y="28" width="47" height="47" rx="5" class="ink"/>
+      <text x="49" y="61" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+      <text x="25" y="123" font-size="30" font-weight="800" class="ink">Intake</text>
+      <text x="25" y="156" font-size="20" class="muted">Capture request, users,</text>
+      <text x="25" y="179" font-size="20" class="muted">constraints, risks, and</text>
+      <text x="25" y="202" font-size="20" class="muted">design sources.</text>
+    </g>
+
+    <line x1="264" y1="121" x2="284" y2="121" stroke="#c8d4e3" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <g transform="translate(288 0)">
+      <rect class="panel" x="0" y="0" width="264" height="242" rx="7" filter="url(#softShadow)"/>
+      <rect x="0" y="0" width="264" height="6" rx="3" class="teal"/>
+      <rect x="25" y="28" width="47" height="47" rx="5" class="ink"/>
+      <text x="49" y="61" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">2</text>
+      <text x="25" y="123" font-size="30" font-weight="800" class="ink">PRODUCT.md</text>
+      <text x="25" y="156" font-size="20" class="muted">Define observable B*</text>
+      <text x="25" y="179" font-size="20" class="muted">behavior before any</text>
+      <text x="25" y="202" font-size="20" class="muted">implementation plan.</text>
+    </g>
+
+    <line x1="552" y1="121" x2="572" y2="121" stroke="#c8d4e3" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <g transform="translate(576 0)">
+      <rect class="panel" x="0" y="0" width="264" height="242" rx="7" filter="url(#softShadow)"/>
+      <rect x="0" y="0" width="264" height="6" rx="3" class="orange"/>
+      <rect x="25" y="28" width="47" height="47" rx="5" class="ink"/>
+      <text x="49" y="61" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">3</text>
+      <text x="25" y="123" font-size="30" font-weight="800" class="ink">Product Gate</text>
+      <text x="25" y="156" font-size="20" class="muted">Explicit approval unlocks</text>
+      <text x="25" y="179" font-size="20" class="muted">technical planning.</text>
+    </g>
+
+    <line x1="840" y1="121" x2="860" y2="121" stroke="#c8d4e3" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <g transform="translate(864 0)">
+      <rect class="panel" x="0" y="0" width="264" height="242" rx="7" filter="url(#softShadow)"/>
+      <rect x="0" y="0" width="264" height="6" rx="3" fill="#334155"/>
+      <rect x="25" y="28" width="47" height="47" rx="5" class="ink"/>
+      <text x="49" y="61" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">4</text>
+      <text x="25" y="123" font-size="30" font-weight="800" class="ink">TECH.md</text>
+      <text x="25" y="156" font-size="20" class="muted">Ground the plan in real</text>
+      <text x="25" y="179" font-size="20" class="muted">code, risks, and checks.</text>
+    </g>
+
+    <line x1="1128" y1="121" x2="1148" y2="121" stroke="#c8d4e3" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <g transform="translate(1152 0)">
+      <rect class="panel" x="0" y="0" width="264" height="242" rx="7" filter="url(#softShadow)"/>
+      <rect x="0" y="0" width="264" height="6" rx="3" class="green"/>
+      <rect x="25" y="28" width="47" height="47" rx="5" class="ink"/>
+      <text x="49" y="61" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">5</text>
+      <text x="25" y="123" font-size="30" font-weight="800" class="ink">Tech Gate</text>
+      <text x="25" y="156" font-size="20" class="muted">Approval unlocks scoped</text>
+      <text x="25" y="179" font-size="20" class="muted">code changes.</text>
+    </g>
+
+    <line x1="1416" y1="121" x2="1436" y2="121" stroke="#c8d4e3" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <g transform="translate(1440 0)">
+      <rect class="panel" x="0" y="0" width="264" height="242" rx="7" filter="url(#softShadow)"/>
+      <rect x="0" y="0" width="264" height="6" rx="3" class="purple"/>
+      <rect x="25" y="28" width="47" height="47" rx="5" class="ink"/>
+      <text x="49" y="61" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">6</text>
+      <text x="25" y="123" font-size="30" font-weight="800" class="ink">Loop Runner</text>
+      <text x="25" y="156" font-size="20" class="muted">Small verified steps with</text>
+      <text x="25" y="179" font-size="20" class="muted">trace and review evidence.</text>
+    </g>
+  </g>
+
+  <g transform="translate(112 842)">
+    <rect class="panel" x="0" y="0" width="1696" height="134" rx="7" filter="url(#softShadow)"/>
+    <rect x="0" y="0" width="7" height="134" rx="4" class="orange"/>
+    <text x="35" y="52" font-size="27" font-weight="800" class="ink">Fast evidence, plain files</text>
+    <text x="35" y="86" font-size="21" class="muted">VERIFY.md maps behavior and commands.</text>
+    <text x="35" y="112" font-size="21" class="muted">REVIEW.md records review. REPORT.md summarizes delivery.</text>
+    <line x1="660" y1="25" x2="660" y2="109" stroke="#d8e4f4" stroke-width="2"/>
+    <text x="695" y="52" font-size="27" font-weight="800" class="ink">Less platform, more momentum</text>
+    <text x="695" y="86" font-size="21" class="muted">No dashboard, scheduler, replay engine, or database</text>
+    <text x="695" y="112" font-size="21" class="muted">is required for the core workflow.</text>
+    <g transform="translate(1520 30)">
+      <rect x="0" y="0" width="83" height="78" rx="8" fill="#eef4fb" stroke="#cbd7e8"/>
+      <line x1="17" y1="22" x2="66" y2="22" stroke="#64748b" stroke-width="6" stroke-linecap="round"/>
+      <line x1="17" y1="40" x2="66" y2="40" stroke="#64748b" stroke-width="6" stroke-linecap="round"/>
+      <line x1="17" y1="58" x2="52" y2="58" stroke="#64748b" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="64" cy="58" r="8" class="green"/>
+      <path d="M 60 57 L 64 62 L 71 51" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <g transform="translate(112 1004)">
+    <rect x="0" y="0" width="1696" height="45" rx="22" fill="#0f172a"/>
+    <text x="848" y="30" text-anchor="middle" font-size="20" fill="#e5e7eb" class="mono">Artifacts: PRODUCT.md / TECH.md / GATES.json / LOOP_STATE.json / VERIFY.md / REVIEW.md / REPORT.md</text>
+  </g>
+</svg>

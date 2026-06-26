@@ -1,19 +1,19 @@
 ---
 name: spec-loop-runner
-description: Execute the stateful Loop Runner Implement phase after PRODUCT.md and TECH.md have both passed their review gates. Use when an approved spec-driven task is ready for implementation, verification matrix updates, and delivery reporting.
+description: Execute the stateful Loop Runner Implement phase after PRODUCT.md and TECH.md have both passed their review gates. Use when an approved spec-driven task is ready for Coordinator-led multi-role implementation, verification matrix updates, independent review, and delivery reporting.
 ---
 
 # spec-loop-runner
 
-Execute implementation after the PRODUCT and TECH gates as a stateful, verifiable loop.
+Execute implementation after the PRODUCT and TECH gates as a stateful, verifiable, Coordinator-led role loop.
 
-Loop Runner Implement is not just "write code from `TECH.md`." It is the post-gate execution engine for LoopSpec:
+Loop Runner Implement is not just "write code from `TECH.md`." It is the post-gate execution engine for FastSpec:
 
 ```text
-Plan -> Implement -> Verify -> Fix -> Re-verify -> Record -> Decide
+Coordinator -> Planner -> Implementer -> Verifier -> Reviewer -> Coordinator decision
 ```
 
-Each iteration chooses the smallest meaningful implementation step, changes only that scope, runs the smallest useful verification, records the result, and decides whether to continue, stop, block, or return to a review gate.
+Each iteration chooses the smallest meaningful implementation step, changes only that scope, runs the smallest useful verification, records the result, receives independent review, and decides whether to continue, stop, block, or return to a review gate.
 
 ## Preconditions
 
@@ -41,8 +41,11 @@ Required:
 
 Optional, depending on task type and repository:
 
+- existing `specs/<id>/AGENT_ASSIGNMENTS.json`
 - existing `specs/<id>/LOOP_STATE.json`
+- existing `specs/<id>/TRACE.jsonl`
 - existing `specs/<id>/VERIFY.md`
+- existing `specs/<id>/REVIEW.md`
 - Figma source or recorded design context
 - bug report, reproduction notes, logs, traces, crash reports, or screenshots
 - existing tests, scripts, CI docs, package metadata, and local validation commands
@@ -52,24 +55,52 @@ Optional, depending on task type and repository:
 
 Loop implementation writes these files under the same `specs/<id>/` directory:
 
+- `AGENT_ASSIGNMENTS.json` — role ownership, responsibilities, inputs, outputs, and handoff artifacts.
 - `LOOP_STATE.json` — current loop state and last iteration result.
+- `TRACE.jsonl` — append-only role action and handoff trace.
 - `VERIFY.md` — verification matrix for product behavior, technical requirements, commands, and risks.
+- `REVIEW.md` — independent review of scope, spec compliance, code quality, risks, and reviewer decision.
 - `REPORT.md` — final delivery report.
 
 These artifacts are implementation evidence. They do not approve PRODUCT or TECH gates and do not add fields to `GATES.json`.
+
+## Roles
+
+### Loop Runner / Coordinator
+
+The Coordinator owns state flow. It confirms gates, initializes or resumes assignments, records trace entries, moves work between roles, and decides whether to continue, stop successfully, stop blocked, or escalate to PRODUCT or TECH review.
+
+### Planner Agent
+
+The Planner converts approved `TECH.md` and current loop state into the smallest meaningful implementation step. It defines step goal, scope, verification method, and handoff artifacts. It does not edit code, change product behavior, or redesign the approved technical plan.
+
+### Implementer Agent
+
+The Implementer executes only the current scoped task. If the work requires behavior outside approved `PRODUCT.md`, technical direction outside approved `TECH.md`, unrelated cleanup, or broader scope than planned, it stops and hands the issue back to the Coordinator.
+
+### Verifier Agent
+
+The Verifier runs the smallest useful validation, classifies the result, and updates `VERIFY.md` with evidence, command results, limitations, blockers, and remaining risks.
+
+### Reviewer Agent
+
+The Reviewer independently checks scope control, spec compliance, code quality, and delivery risk. It updates `REVIEW.md` and can request rework, block completion, or recommend PRODUCT or TECH gate escalation. It does not approve PRODUCT or TECH gates.
+
+The same runtime may perform multiple roles, but artifacts must still record the role currently acting.
 
 ## Core Loop
 
 Every iteration follows the same runner core:
 
-1. Gate Check: reconfirm the approved gate state.
-2. Context Hydration: read the approved specs, current loop state, relevant code, tests, configs, and source material before editing.
-3. Delta Planning: choose the smallest meaningful step that can be independently verified.
-4. Atomic Implementation: change only the files and behavior needed for that step.
-5. Verification: run the smallest validation that can prove or falsify the step.
-6. Result Classification: classify the verification result with a supported value.
-7. State Update: update `LOOP_STATE.json` and `VERIFY.md`.
-8. Decision: continue, stop successfully, stop blocked, or escalate to PRODUCT or TECH review.
+1. Gate Check: Coordinator reconfirms the approved gate state.
+2. Context Hydration: Coordinator reads approved specs, current loop artifacts, relevant code, tests, configs, and source material before editing.
+3. Assignment Update: Coordinator updates `AGENT_ASSIGNMENTS.json` when ownership or role inputs change.
+4. Delta Planning: Planner chooses the smallest meaningful step that can be independently verified.
+5. Atomic Implementation: Implementer changes only the files and behavior needed for that step.
+6. Verification: Verifier runs the smallest validation that can prove or falsify the step.
+7. Review: Reviewer checks scope, spec compliance, code quality, and risk.
+8. Record: update `LOOP_STATE.json`, append `TRACE.jsonl`, update `VERIFY.md`, and update `REVIEW.md`.
+9. Decision: Coordinator continues, stops successfully, stops blocked, or escalates to PRODUCT or TECH review.
 
 Do not bundle unrelated feature work, refactoring, style cleanup, test rewrites, and documentation changes into one loop step unless the approved `TECH.md` explicitly calls for that combined change.
 
@@ -82,6 +113,7 @@ A valid iteration has:
 - an explicit verification method
 - a failure path that can be understood and fixed
 - no unrelated cleanup
+- named handoff artifacts
 
 Stop and return to TECH Review Gate if the next needed change is outside `TECH.md`'s module, dependency, architecture, or validation plan. Return to PRODUCT Review Gate if the next needed change alters user-visible behavior or acceptance expectations.
 
@@ -98,16 +130,7 @@ Verify:
 - relevant loading, empty, error, and cancellation states
 - compatibility with existing behavior
 - technical requirements from `TECH.md`
-
-Typical iteration order:
-
-1. data structures, protocols, or feature flags
-2. core logic
-3. UI or interface skeleton when applicable
-4. interactions or API wiring
-5. state handling
-6. tests
-7. verification matrix and report
+- reviewer decision in `REVIEW.md`
 
 ### feature_with_figma
 
@@ -140,6 +163,7 @@ The loop must:
 5. verify the original path
 6. verify adjacent regression paths
 7. add or update regression tests when practical
+8. receive independent review
 
 Do not perform unrelated refactoring. If root cause changes the approved technical plan, return to TECH Review Gate.
 
@@ -154,167 +178,54 @@ The loop must:
 3. refactor in small steps
 4. verify behavior remains unchanged after each step
 5. avoid public API or product behavior changes unless explicitly approved
+6. receive independent review
 
 Stop if behavior must change, protection is inadequate, or the refactor requires a larger migration than `TECH.md` approved.
 
 ## Result Classification
 
-After each verification, classify the result as one of:
+After each verification, set `last_verification.result` to one of:
 
 - `passed`
-- `failed_compile`
-- `failed_test`
-- `failed_lint`
-- `failed_ui_check`
-- `failed_design_check`
+- `failed`
 - `failed_reproduce`
-- `blocked_missing_context`
-- `blocked_missing_tool`
-- `blocked_spec_conflict`
+- `blocked`
 - `needs_product_review`
 - `needs_tech_review`
 
-Use the classification to choose the next action:
+Set `last_verification.type` to the verification source:
 
-- `passed`: continue to the next step or stop successfully.
-- `failed_compile`, `failed_test`, `failed_lint`, `failed_ui_check`, `failed_design_check`: inspect evidence, make the smallest understood fix, and rerun relevant verification.
+- `build`
+- `test`
+- `lint`
+- `ui`
+- `design`
+- `reproduce`
+- `manual`
+- `inspection`
+- `other`
+
+Use `result` to choose the next action:
+
+- `passed`: continue to review, then continue to the next step or stop successfully.
+- `failed`: inspect evidence, make the smallest understood fix, and rerun the relevant verification type.
 - `failed_reproduce`: return to reproduction or stop blocked with evidence.
-- `blocked_missing_context`, `blocked_missing_tool`: stop blocked and name the missing input or tool plus the best fallback attempted.
-- `blocked_spec_conflict`: stop and identify whether PRODUCT or TECH review must reopen.
+- `blocked`: stop blocked and name the missing context, missing tool, spec conflict, fallback attempted, or other blocker in `summary`, `blockers`, or `risks`.
 - `needs_product_review`: update `PRODUCT.md`, reset both gate statuses to `pending`, and return to PRODUCT Review Gate.
 - `needs_tech_review`: update `TECH.md`, set `tech.status` to `pending`, and return to TECH Review Gate.
 
-## LOOP_STATE.json
+## Artifact Templates
 
-Use this shape:
+When creating or updating Loop Runner artifacts, read only the relevant template under `references/artifacts/`:
 
-```json
-{
-  "version": 1,
-  "feature_id": "example-feature",
-  "task_type": "feature",
-  "profile": "feature",
-  "phase": "loop_runner_implement",
-  "iteration": 3,
-  "status": "running",
-  "current_step": {
-    "id": "I3",
-    "goal": "Connect UI action to the approved handler",
-    "scope": ["FeatureView.swift", "FeatureViewModel.swift"]
-  },
-  "last_action": "Connected the primary action to the view model.",
-  "last_verification": {
-    "type": "build",
-    "command": "xcodebuild ...",
-    "result": "passed",
-    "summary": "Build succeeded."
-  },
-  "next_action": "Add loading and error state tests.",
-  "decision": "continue",
-  "blockers": [],
-  "risks": ["Snapshot verification not yet completed."],
-  "stop_conditions": {
-    "max_iterations": 8,
-    "require_human_review_on_product_change": true,
-    "require_human_review_on_tech_change": true
-  }
-}
-```
+- `agent-assignments.md` for `AGENT_ASSIGNMENTS.json`
+- `loop-state.md` for `LOOP_STATE.json`
+- `trace-jsonl.md` for `TRACE.jsonl`
+- `verify.md` for `VERIFY.md`
+- `review.md` for `REVIEW.md`
+- `report.md` for `REPORT.md`
 
-Supported `status` values are `not_started`, `running`, `passed`, `blocked`, `needs_product_review`, and `needs_tech_review`.
-
-Supported `decision` values are `continue`, `stop_success`, `stop_blocked`, `escalate_product`, and `escalate_tech`.
-
-## VERIFY.md
-
-Use this structure:
-
-```markdown
-# Verification Matrix
-
-## Summary
-
-| Item | Status |
-|---|---|
-| Product behaviors verified | passed |
-| Technical checks verified | passed |
-| Build passed | passed |
-| Tests passed | passed |
-| Manual checks required | none |
-| Remaining blockers | none |
-
-## Product Verification
-
-| ID | Product Behavior | Verification Method | Result | Notes |
-|---|---|---|---|---|
-| B1 | <behavior> | <test or inspection> | passed | <evidence> |
-
-## Technical Verification
-
-| ID | Technical Requirement | Verification Method | Result | Notes |
-|---|---|---|---|---|
-| T1 | <requirement> | <test or inspection> | passed | <evidence> |
-
-## Commands
-
-| Command | Result | Notes |
-|---|---|---|
-| node scripts/lint-specs.mjs | passed | Spec lint passed. |
-
-## Remaining Risks
-
-- None.
-```
-
-For `feature_with_figma`, add:
-
-```markdown
-## Design Verification
-
-| ID | Design Requirement | Verification Method | Result | Notes |
-|---|---|---|---|---|
-| D1 | <requirement> | <screenshot/manual/inspection> | passed | <evidence> |
-```
-
-`VERIFY.md` should be updated throughout implementation, not only at the end.
-
-## REPORT.md
-
-Use this structure:
-
-```markdown
-# Implementation Report
-
-## Summary
-
-<What shipped.>
-
-## Specs and gates
-
-| Artifact | State |
-|---|---|
-| PRODUCT.md | approved |
-| TECH.md | approved |
-| GATES.json | product=approved, tech=approved |
-
-## Loop result
-
-| Item | Result |
-|---|---|
-| Profile | feature |
-| Final decision | stop_success |
-| Iterations | 7 |
-
-## Verification evidence
-
-<Commands, artifacts, behavior evidence, and known manual checks.>
-
-## Risks and follow-ups
-
-<Remaining risks or `None`.>
-```
-
-Generate `REPORT.md` before claiming successful completion.
+`VERIFY.md` should be updated throughout implementation, not only at the end. Generate `REPORT.md` before claiming successful completion.
 
 ## Successful Stop Conditions
 
@@ -324,6 +235,8 @@ Stop successfully only when:
 - all required technical checks pass or have documented non-blocking limitations
 - `VERIFY.md` has no blocking pending item
 - no blocker remains in `LOOP_STATE.json`
+- `TRACE.jsonl` records the implementation history
+- `REVIEW.md` has a non-blocking reviewer decision
 - `REPORT.md` exists
 - no unapproved product or technical spec change is needed
 
@@ -339,6 +252,7 @@ Stop and escalate when:
 - the loop reaches `max_iterations`
 - the working tree becomes unclear or unsafe
 - the agent cannot choose a safe next step
+- Reviewer Agent requests gate escalation
 
 Product behavior changes return to PRODUCT Review Gate and reset both gate statuses to `pending`. TECH-only changes return to TECH Review Gate and set `tech.status` to `pending`.
 
@@ -346,12 +260,11 @@ Product behavior changes return to PRODUCT Review Gate and reset both gate statu
 
 Do not add these unless a future approved spec calls for them:
 
-- `TRACE.jsonl`
 - dashboards
-- loop replay
-- multi-agent coordination
+- trace replay
 - cost reports
 - automatic CI orchestration
+- automated multi-agent scheduling
 - complex state-machine visualization
 
 ## Related Skills

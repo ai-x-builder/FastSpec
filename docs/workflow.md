@@ -1,8 +1,8 @@
 # Workflow
 
-LoopSpec is a staged workflow for substantial agent-driven work. It keeps product intent, technical planning, review state, implementation state, verification evidence, and final reporting durable across agent sessions, pull requests, and future maintenance.
+FastSpec is a staged workflow for substantial agent-driven work. It keeps product intent, technical planning, review state, implementation state, verification evidence, and final reporting durable across agent sessions, pull requests, and future maintenance.
 
-The workflow is intentionally pragmatic. Small local bug fixes, narrow UI tweaks, and straightforward refactors can skip it. Once a change enters LoopSpec, the core artifacts are:
+The workflow is intentionally pragmatic. Small local bug fixes, narrow UI tweaks, and straightforward refactors can skip it. Once a change enters FastSpec, the core artifacts are:
 
 - `specs/<id>/PRODUCT.md`
 - `specs/<id>/TECH.md`
@@ -10,9 +10,18 @@ The workflow is intentionally pragmatic. Small local bug fixes, narrow UI tweaks
 
 During implementation, Loop Runner adds:
 
+- `specs/<id>/AGENT_ASSIGNMENTS.json`
 - `specs/<id>/LOOP_STATE.json`
+- `specs/<id>/TRACE.jsonl`
 - `specs/<id>/VERIFY.md`
+- `specs/<id>/REVIEW.md`
 - `specs/<id>/REPORT.md`
+
+## Speed As A Design Constraint
+
+FastSpec is designed to feel fast in daily agent work. The workflow uses the fewest durable checkpoints that still prevent drift: PRODUCT approval, TECH approval, then small Loop Runner iterations with verification and review evidence.
+
+Compared with heavier agent workflow systems such as superpowers, FastSpec keeps the core narrow. It avoids platform scheduling, dashboards, replay engines, broad approval metadata, and database-backed state in the default path. That tradeoff is deliberate: the fastest useful workflow is one an agent can read, update, review, and resume from plain repository files.
 
 ## Why This Workflow Exists
 
@@ -25,17 +34,19 @@ Agent-driven implementation often fails for avoidable reasons:
 - Verification happens only at the end or is not mapped to the spec.
 - A future agent cannot tell whether work is current, blocked, complete, or safe to resume.
 
-LoopSpec addresses those problems by separating reviewable planning from stateful implementation and checking the relevant artifacts into source control.
+FastSpec addresses those problems by separating reviewable planning from stateful implementation and checking the relevant artifacts into source control.
 
 ## Design Principles
 
+- Fast by design. Prefer the shortest path that preserves product intent, technical intent, and verification evidence.
 - Product behavior comes first. `PRODUCT.md` defines what the user, caller, or consumer observes.
 - Technical planning follows approved product behavior. `TECH.md` translates reviewed behavior into an implementation plan grounded in the codebase.
 - Implementation starts only after both gates pass.
-- Implementation is a loop. Each step is planned, implemented, verified, recorded, and evaluated.
+- Implementation is a Coordinator-led role loop. Each step is planned, implemented, verified, reviewed, recorded, and evaluated.
 - Specs stay alive. If implementation changes behavior or architecture, specs and gate state are updated.
 - Review state is explicit. `GATES.json` records only PRODUCT and TECH review approval.
-- Loop state is separate. `LOOP_STATE.json`, `VERIFY.md`, and `REPORT.md` record implementation evidence.
+- Loop evidence is separate. `AGENT_ASSIGNMENTS.json`, `LOOP_STATE.json`, `TRACE.jsonl`, `VERIFY.md`, `REVIEW.md`, and `REPORT.md` record implementation evidence.
+- Platform features stay out of the core. Add schedulers, dashboards, trace replay, or cost reporting only through a future approved spec.
 
 ## High-Level Flow
 
@@ -51,7 +62,7 @@ flowchart TD
   G --> H["TECH Review Gate"]
   H -->|Not approved| G
   H -->|Approved| I["Loop Runner Implement"]
-  I --> J["Verify Matrix"]
+  I --> J["Verify Matrix and Review"]
   J --> K{"Spec change needed?"}
   K -->|Product behavior changed| E
   K -->|Tech plan changed| G
@@ -156,21 +167,24 @@ Implementation begins only when:
 - `tech.status` is `approved`
 - `TECH.md` is based on the latest reviewed `PRODUCT.md`
 
-Loop Runner executes:
+Loop Runner executes a Coordinator-led role loop:
 
 ```text
-Plan -> Implement -> Verify -> Fix -> Re-verify -> Record -> Decide
+Coordinator -> Planner -> Implementer -> Verifier -> Reviewer -> Coordinator decision
 ```
 
 Each iteration:
 
 - reads only the context needed for the next step
-- chooses a small, independently verifiable change
-- implements only that change
-- runs the smallest useful verification
+- has Planner choose a small, independently verifiable change
+- has Implementer change only that scope
+- has Verifier run the smallest useful verification
+- has Reviewer independently check scope, spec compliance, code quality, and risk
 - classifies the result
+- appends role activity and handoffs to `TRACE.jsonl`
 - updates `LOOP_STATE.json`
 - updates `VERIFY.md`
+- updates `REVIEW.md`
 - continues, stops, blocks, or escalates
 
 Supported profiles are `feature`, `feature_with_figma`, `bugfix`, and `refactor`.
@@ -200,6 +214,8 @@ The matrix is updated throughout implementation and must have no blocking pendin
 - behavior evidence
 - known limitations, risks, and follow-ups
 
+`REVIEW.md` must have a non-blocking reviewer decision before the report can claim successful completion. Reviewer decisions do not approve PRODUCT or TECH gates.
+
 ## Keep Specs Current
 
 The specs should describe the feature that actually ships.
@@ -209,9 +225,3 @@ Update `PRODUCT.md` when user-facing behavior, UX, edge cases, behavior invarian
 Update `TECH.md` when implementation approach, module boundaries, sequencing, risks, dependencies, rollout assumptions, or validation strategy change. When TECH changes without product behavior changes, set `tech.status` to `pending`.
 
 After any status reset, return to the relevant review gate before considering the work complete.
-
-## Current Scope
-
-LoopSpec currently includes `LOOP_STATE.json`, `VERIFY.md`, `REPORT.md`, one runner core, four profiles, result classification, stop rules, and gate escalation.
-
-It does not include `TRACE.jsonl`, dashboards, loop replay, multi-agent coordination, cost reports, automatic CI orchestration, or complex state-machine visualization.

@@ -161,7 +161,7 @@ The gate passes only when:
 
 If the gate does not pass, revise `TECH.md` and keep `tech.status` as `pending`. If the revision changes product behavior, update `PRODUCT.md`, set both statuses in `GATES.json` to `pending`, and pass PRODUCT Review Gate again before updating `TECH.md`.
 
-Implementation evidence is recorded by Loop Runner in `LOOP_STATE.json`, `VERIFY.md`, and `REPORT.md`. Do not add separate decision-tracking artifacts unless a future approved spec introduces them.
+Implementation evidence is recorded by Loop Runner in artifacts such as `AGENT_ASSIGNMENTS.json`, `LOOP_STATE.json`, `TRACE.jsonl`, `VERIFY.md`, `REVIEW.md`, and `REPORT.md`. Do not add separate decision-tracking artifacts unless a future approved spec introduces them.
 
 ## Related Skills
 
